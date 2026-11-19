@@ -1,0 +1,4662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXORA CONSTRUCTIONS | Architecture, Engineering and Luxury Construction</title>
+  <meta name="description" content="Nexora Constructions is an international architecture, engineering and luxury construction firm delivering landmark commercial, residential and industrial structures worldwide.">
+  <meta name="theme-color" content="#B8734E">
+  <meta property="og:title" content="NEXORA CONSTRUCTIONS | Building the Future. Shaping the World.">
+  <meta property="og:description" content="Visionary architecture, modern industrial design, and precision engineering for extraordinary structures.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    /* ==========================================================================
+       CSS VARIABLES AND COLOUR SYSTEM
+       Charcoal, Copper, and Warm Ivory lead the design.
+       Strictly no navy, midnight blue, royal blue, gold, or champagne.
+       ========================================================================== */
+    :root {
+      --color-charcoal: #292929;
+      --color-deep-charcoal: #1F1F1F;
+      --color-copper: #B8734E;
+      --color-light-copper: #D29A78;
+      --color-warm-ivory: #F5F2EB;
+      --color-concrete-grey: #A6A7A5;
+      --color-white: #FFFFFF;
+
+      /* High contrast readability accents */
+      --color-grey-light: #C4C5C3;
+      --color-copper-glow: rgba(184, 115, 78, 0.25);
+      --color-copper-subtle: rgba(184, 115, 78, 0.12);
+      --color-charcoal-glass: rgba(41, 41, 41, 0.94);
+      --color-deep-glass: rgba(31, 31, 31, 0.88);
+
+      /* Typography */
+      --font-heading: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+      /* Transitions */
+      --transition-smooth: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+      --transition-fast: all 0.2s ease;
+      --header-height: 84px;
+    }
+
+    /* CSS Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: var(--color-deep-charcoal);
+      color: var(--color-grey-light);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Accessibility Skip Link */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 1.5rem;
+      background: var(--color-copper);
+      color: var(--color-white);
+      padding: 0.75rem 1.5rem;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.875rem;
+      letter-spacing: 0.05em;
+      z-index: 9999;
+      text-decoration: none;
+      transition: top 0.3s ease;
+    }
+    .skip-link:focus {
+      top: 1rem;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--color-light-copper);
+      outline-offset: 3px;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      color: var(--color-white);
+      line-height: 1.25;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      color: var(--color-grey-light);
+      font-size: 1rem;
+    }
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: var(--transition-fast);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1320px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    .section {
+      padding: clamp(4.5rem, 8vw, 7.5rem) 0;
+      position: relative;
+    }
+
+    .section-dark {
+      background-color: var(--color-charcoal);
+    }
+    .section-deep {
+      background-color: var(--color-deep-charcoal);
+    }
+    .section-ivory {
+      background-color: var(--color-warm-ivory);
+      color: var(--color-charcoal);
+    }
+    .section-ivory h2, 
+    .section-ivory h3, 
+    .section-ivory h4 {
+      color: var(--color-charcoal);
+    }
+    .section-ivory p {
+      color: #4A4A4A;
+    }
+
+    /* Section Headers */
+    .section-header {
+      margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    }
+    .section-header.text-center {
+      text-align: center;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-label {
+      font-family: var(--font-heading);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-copper);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .section-label::before {
+      content: "";
+      width: 24px;
+      height: 2px;
+      background-color: var(--color-copper);
+      display: inline-block;
+    }
+    .section-header.text-center .section-label::after {
+      content: "";
+      width: 24px;
+      height: 2px;
+      background-color: var(--color-copper);
+      display: inline-block;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .section-subtitle {
+      font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+      line-height: 1.7;
+      color: var(--color-concrete-grey);
+    }
+    .section-ivory .section-subtitle {
+      color: #555555;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      min-height: 48px;
+      padding: 0.875rem 2rem;
+      font-family: var(--font-heading);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border: 1px solid transparent;
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+
+    .btn-copper {
+      background-color: var(--color-copper);
+      color: var(--color-white);
+      border-color: var(--color-copper);
+    }
+    .btn-copper:hover {
+      background-color: var(--color-light-copper);
+      border-color: var(--color-light-copper);
+      color: var(--color-deep-charcoal);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(184, 115, 78, 0.28);
+    }
+
+    .btn-outline-white {
+      background-color: transparent;
+      color: var(--color-white);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .btn-outline-white:hover {
+      background-color: var(--color-white);
+      color: var(--color-deep-charcoal);
+      border-color: var(--color-white);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-copper {
+      background-color: transparent;
+      color: var(--color-copper);
+      border-color: var(--color-copper);
+    }
+    .btn-outline-copper:hover {
+      background-color: var(--color-copper);
+      color: var(--color-white);
+      transform: translateY(-2px);
+    }
+
+    /* Image System and Fallback Behavior */
+    .image-box {
+      position: relative;
+      background-color: var(--color-deep-charcoal);
+      border: 1px solid rgba(184, 115, 78, 0.35);
+      background-image: repeating-linear-gradient(45deg, rgba(184, 115, 78, 0.04) 0, rgba(184, 115, 78, 0.04) 12px, transparent 12px, transparent 24px);
+      overflow: hidden;
+      display: block;
+    }
+
+    .image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .img-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      background-color: var(--color-deep-charcoal);
+      border: 1px solid var(--color-copper);
+      background-image: repeating-linear-gradient(45deg, rgba(184, 115, 78, 0.06) 0, rgba(184, 115, 78, 0.06) 10px, transparent 10px, transparent 20px);
+      z-index: 1;
+      padding: 0.75rem;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .img-fallback svg {
+      width: 26px;
+      height: 26px;
+      stroke: var(--color-copper);
+      opacity: 0.85;
+    }
+
+    .fallback-label {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--color-concrete-grey);
+      background: rgba(25, 25, 25, 0.9);
+      padding: 4px 10px;
+      border: 1px solid rgba(184, 115, 78, 0.3);
+      white-space: nowrap;
+    }
+
+    .has-fallback {
+      position: relative !important;
+      background-color: var(--color-deep-charcoal) !important;
+      border: 1px solid var(--color-copper) !important;
+      background-image: repeating-linear-gradient(45deg, rgba(184, 115, 78, 0.05) 0, rgba(184, 115, 78, 0.05) 10px, transparent 10px, transparent 20px) !important;
+    }
+
+    .image-box:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Fixed Aspect Ratio Utilities */
+    .ratio-16-9 {
+      aspect-ratio: 16 / 9;
+    }
+    .ratio-4-3 {
+      aspect-ratio: 4 / 3;
+    }
+    .ratio-1-1 {
+      aspect-ratio: 1 / 1;
+    }
+    .ratio-3-4 {
+      aspect-ratio: 3 / 4;
+    }
+
+    /* Animated Grid Background */
+    .blueprint-grid {
+      background-image: linear-gradient(rgba(184, 115, 78, 0.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(184, 115, 78, 0.05) 1px, transparent 1px);
+      background-size: 48px 48px;
+      background-position: center center;
+    }
+
+    /* ==========================================================================
+       HEADER AND NAVIGATION
+       ========================================================================== */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--header-height);
+      z-index: 1000;
+      transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+      background-color: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .site-header.scrolled {
+      background-color: var(--color-charcoal-glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(184, 115, 78, 0.25);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    /* Logo */
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      z-index: 1001;
+    }
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .brand-name {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-name-top {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--color-white);
+      letter-spacing: 0.12em;
+      line-height: 1.1;
+    }
+    .brand-name-bottom {
+      font-family: var(--font-heading);
+      font-size: 0.625rem;
+      font-weight: 700;
+      color: var(--color-copper);
+      letter-spacing: 0.3em;
+      margin-top: 2px;
+    }
+
+    /* Desktop Navigation Links */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: 1.85rem;
+    }
+
+    .nav-link {
+      font-family: var(--font-heading);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-grey-light);
+      position: relative;
+      padding: 0.5rem 0;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--color-copper);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--color-white);
+    }
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: var(--color-copper);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    /* Hamburger Toggle */
+    .hamburger-btn {
+      display: none;
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border: 1px solid rgba(184, 115, 78, 0.4);
+      cursor: pointer;
+      position: relative;
+      z-index: 1001;
+      padding: 10px;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .hamburger-line {
+      width: 22px;
+      height: 2px;
+      background-color: var(--color-white);
+      transition: var(--transition-smooth);
+    }
+
+    .hamburger-btn.active .hamburger-line:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+      background-color: var(--color-copper);
+    }
+    .hamburger-btn.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger-btn.active .hamburger-line:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+      background-color: var(--color-copper);
+    }
+
+    /* Mobile Drawer */
+    .mobile-menu-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: var(--color-deep-charcoal);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 2.5rem;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      border-left: 2px solid var(--color-copper);
+    }
+
+    .mobile-menu-overlay.open {
+      transform: translateX(0);
+    }
+
+    .mobile-nav-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .mobile-nav-links a {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--color-white);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: inline-block;
+      transition: var(--transition-fast);
+    }
+
+    .mobile-nav-links a:hover,
+    .mobile-nav-links a.active {
+      color: var(--color-copper);
+      padding-left: 0.5rem;
+    }
+
+    /* ==========================================================================
+       SECTION 1: HERO
+       ========================================================================== */
+    .hero-section {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding-top: calc(var(--header-height) + 2rem);
+      padding-bottom: 5rem;
+      overflow: hidden;
+      background-color: var(--color-deep-charcoal);
+    }
+
+    .hero-bg-container {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .hero-bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: heroSubtleZoom 26s infinite alternate ease-in-out;
+    }
+
+    @keyframes heroSubtleZoom {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.08); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(31, 31, 31, 0.82) 0%,
+        rgba(25, 25, 25, 0.88) 60%,
+        rgba(31, 31, 31, 0.98) 100%
+      );
+      z-index: 1;
+    }
+
+    .hero-grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(184, 115, 78, 0.06) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(184, 115, 78, 0.06) 1px, transparent 1px);
+      background-size: 64px 64px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: 920px;
+    }
+
+    .hero-label {
+      font-family: var(--font-heading);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: var(--color-copper);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .hero-label::before {
+      content: "";
+      width: 32px;
+      height: 2px;
+      background-color: var(--color-copper);
+    }
+
+    .hero-headline {
+      font-size: clamp(2.5rem, 5.8vw, 4.75rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.75rem;
+      text-transform: uppercase;
+    }
+    .hero-headline span {
+      display: block;
+    }
+    .hero-headline .text-copper {
+      color: var(--color-copper);
+    }
+
+    .hero-description {
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      line-height: 1.7;
+      color: var(--color-concrete-grey);
+      margin-bottom: 2.5rem;
+      max-width: 780px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 4rem;
+    }
+
+    /* Hero Stats Strip */
+    .hero-stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(184, 115, 78, 0.25);
+    }
+
+    .hero-stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-stat-number {
+      font-family: var(--font-heading);
+      font-size: clamp(1.85rem, 3.2vw, 2.75rem);
+      font-weight: 800;
+      color: var(--color-white);
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+
+    .hero-stat-label {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--color-copper);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .hero-scroll-indicator {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 2rem;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--color-concrete-grey);
+      font-family: var(--font-heading);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--color-copper);
+    }
+
+    /* ==========================================================================
+       SECTION 2: ABOUT US
+       ========================================================================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: center;
+    }
+
+    .about-image-wrapper {
+      position: relative;
+      padding: 1.25rem;
+    }
+
+    .about-offset-frame {
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--color-copper);
+      transform: translate(-16px, -16px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .about-image-box {
+      position: relative;
+      z-index: 1;
+      aspect-ratio: 4 / 3;
+      border: 1px solid rgba(184, 115, 78, 0.3);
+    }
+
+    .about-features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 2.25rem 0;
+    }
+
+    .about-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+    }
+
+    .about-feature-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--color-copper);
+      background-color: var(--color-copper-subtle);
+      border: 1px solid rgba(184, 115, 78, 0.3);
+      margin-top: 2px;
+    }
+
+    .about-feature-text {
+      font-family: var(--font-heading);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--color-white);
+      line-height: 1.35;
+    }
+
+    /* ==========================================================================
+       SECTION 3: SERVICES
+       ========================================================================== */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.75rem;
+    }
+
+    .service-card {
+      background-color: var(--color-deep-charcoal);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition-smooth);
+      overflow: hidden;
+    }
+
+    .service-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--color-copper);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+    }
+    .service-card:hover::after {
+      opacity: 1;
+    }
+
+    .service-image-box {
+      aspect-ratio: 16 / 10;
+      width: 100%;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .service-card-body {
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .service-icon-box {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-copper);
+      margin-bottom: 1.25rem;
+      border: 1px solid rgba(184, 115, 78, 0.3);
+      background-color: rgba(184, 115, 78, 0.08);
+    }
+
+    .service-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--color-white);
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .service-desc {
+      font-size: 0.9375rem;
+      color: var(--color-concrete-grey);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .service-link {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--color-copper);
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: auto;
+    }
+    .service-link svg {
+      transition: transform 0.3s ease;
+    }
+    .service-card:hover .service-link svg {
+      transform: translateX(4px);
+    }
+    .service-card:hover .service-link {
+      color: var(--color-light-copper);
+    }
+
+    /* ==========================================================================
+       SECTION 4: FEATURED PROJECTS
+       ========================================================================== */
+    .projects-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .filter-btn {
+      background-color: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--color-concrete-grey);
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.65rem 1.4rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .filter-btn:hover {
+      border-color: var(--color-copper);
+      color: var(--color-white);
+      background-color: var(--color-copper-subtle);
+    }
+
+    .filter-btn.active {
+      background-color: var(--color-copper);
+      border-color: var(--color-copper);
+      color: var(--color-white);
+    }
+
+    /* Asymmetrical Editorial Grid */
+    .projects-editorial-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 2rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .project-card {
+      position: relative;
+      background-color: var(--color-deep-charcoal);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s ease, opacity 0.4s ease, border-color 0.4s ease;
+    }
+
+    .project-card.hidden {
+      display: none;
+      opacity: 0;
+      transform: scale(0.96);
+    }
+
+    /* Editorial Spans */
+    .project-card:nth-child(1) {
+      grid-column: span 7;
+    }
+    .project-card:nth-child(2) {
+      grid-column: span 5;
+    }
+    .project-card:nth-child(3) {
+      grid-column: span 5;
+    }
+    .project-card:nth-child(4) {
+      grid-column: span 7;
+    }
+    .project-card:nth-child(5) {
+      grid-column: span 6;
+    }
+    .project-card:nth-child(6) {
+      grid-column: span 6;
+    }
+
+    .project-image-box {
+      width: 100%;
+      height: 380px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card:nth-child(1) .project-image-box,
+    .project-card:nth-child(4) .project-image-box {
+      height: 440px;
+    }
+
+    .project-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(31, 31, 31, 0.1) 0%, rgba(25, 25, 25, 0.9) 100%);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .project-card-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-category-tag {
+      font-family: var(--font-heading);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-copper);
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .project-title {
+      font-size: clamp(1.25rem, 2vw, 1.65rem);
+      color: var(--color-white);
+      margin-bottom: 0.4rem;
+      line-height: 1.25;
+    }
+
+    .project-location {
+      font-size: 0.875rem;
+      color: var(--color-concrete-grey);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .project-location svg {
+      color: var(--color-copper);
+      flex-shrink: 0;
+    }
+
+    .project-excerpt {
+      font-size: 0.9375rem;
+      color: var(--color-grey-light);
+      margin-bottom: 1.25rem;
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .project-btn-details {
+      align-self: flex-start;
+      background: rgba(31, 31, 31, 0.75);
+      border: 1px solid var(--color-copper);
+      color: var(--color-white);
+      font-family: var(--font-heading);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.25rem;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: var(--transition-smooth);
+    }
+    .project-btn-details:hover {
+      background: var(--color-copper);
+      color: var(--color-white);
+    }
+
+    .project-card:hover {
+      border-color: var(--color-copper);
+    }
+    .project-card:hover .project-image-box img {
+      transform: scale(1.06);
+    }
+
+    /* ==========================================================================
+       SECTION 5: WHY CHOOSE US
+       ========================================================================== */
+    .why-section {
+      background-color: var(--color-deep-charcoal);
+      border-top: 1px solid rgba(184, 115, 78, 0.2);
+      border-bottom: 1px solid rgba(184, 115, 78, 0.2);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .why-block {
+      background-color: var(--color-charcoal);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 2.25rem 2rem;
+      position: relative;
+      transition: var(--transition-smooth);
+    }
+
+    .why-block::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background-color: var(--color-copper);
+      transition: width 0.35s ease;
+    }
+
+    .why-block:hover {
+      transform: translateY(-4px);
+      border-color: rgba(184, 115, 78, 0.35);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+    .why-block:hover::before {
+      width: 100%;
+    }
+
+    .why-icon-wrap {
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-copper);
+      background-color: var(--color-copper-subtle);
+      border: 1px solid rgba(184, 115, 78, 0.3);
+      margin-bottom: 1.5rem;
+    }
+
+    .why-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-white);
+      margin-bottom: 0.85rem;
+    }
+
+    .why-text {
+      font-size: 0.9375rem;
+      color: var(--color-concrete-grey);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* ==========================================================================
+       SECTION 6: CONSTRUCTION PROCESS
+       ========================================================================== */
+    .process-timeline-wrap {
+      position: relative;
+      margin-top: 4rem;
+    }
+
+    /* Horizontal Connecting Line (Desktop) */
+    .timeline-track-line {
+      position: absolute;
+      top: 36px;
+      left: 6%;
+      right: 6%;
+      height: 2px;
+      background-color: rgba(255, 255, 255, 0.1);
+      z-index: 1;
+    }
+
+    .timeline-progress-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background-color: var(--color-copper);
+      transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .process-steps-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .process-step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .process-badge {
+      width: 72px;
+      height: 72px;
+      background-color: var(--color-charcoal);
+      border: 2px solid var(--color-copper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 1.75rem;
+      transition: var(--transition-smooth);
+    }
+
+    .process-number {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--color-white);
+    }
+
+    .process-step-item:hover .process-badge {
+      background-color: var(--color-copper);
+      transform: scale(1.08);
+      box-shadow: 0 0 25px rgba(184, 115, 78, 0.45);
+    }
+    .process-step-item:hover .process-number {
+      color: var(--color-deep-charcoal);
+    }
+
+    .process-step-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-white);
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .process-step-desc {
+      font-size: 0.875rem;
+      color: var(--color-concrete-grey);
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       SECTION 7: TEAM
+       ========================================================================== */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.5rem;
+    }
+
+    .team-card {
+      background-color: var(--color-deep-charcoal);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s ease, border-color 0.4s ease;
+    }
+
+    .team-card::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--color-copper);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+      z-index: 5;
+    }
+
+    .team-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(184, 115, 78, 0.4);
+    }
+    .team-card:hover::after {
+      transform: scaleX(1);
+    }
+
+    .team-image-box {
+      aspect-ratio: 4 / 5;
+      width: 100%;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .team-info {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .team-position {
+      font-family: var(--font-heading);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-copper);
+      margin-bottom: 0.35rem;
+    }
+
+    .team-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-white);
+      margin-bottom: 0.75rem;
+    }
+
+    .team-bio {
+      font-size: 0.875rem;
+      color: var(--color-concrete-grey);
+      line-height: 1.55;
+      margin-bottom: 1.25rem;
+      flex-grow: 1;
+    }
+
+    .team-social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--color-concrete-grey);
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      transition: color 0.3s ease;
+    }
+    .team-social-link svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+    .team-social-link:hover {
+      color: var(--color-copper);
+    }
+
+    /* ==========================================================================
+       SECTION 8: PROJECT GALLERY
+       ========================================================================== */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 240px;
+      gap: 1.25rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background-color: var(--color-deep-charcoal);
+    }
+
+    /* Editorial Tile Spans */
+    .gallery-item.tile-wide {
+      grid-column: span 2;
+    }
+    .gallery-item.tile-tall {
+      grid-row: span 2;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(25, 25, 25, 0.85) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      z-index: 3;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.08);
+    }
+    .gallery-item:hover .gallery-item-overlay {
+      opacity: 1;
+    }
+
+    .gallery-category-label {
+      font-family: var(--font-heading);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-copper);
+      margin-bottom: 0.25rem;
+    }
+
+    .gallery-item-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-white);
+      line-height: 1.3;
+    }
+
+    /* ==========================================================================
+       SECTION 9: TESTIMONIALS
+       ========================================================================== */
+    .testimonials-slider-wrap {
+      position: relative;
+      max-width: 1040px;
+      margin: 0 auto;
+      overflow: hidden;
+      padding: 1rem 0;
+    }
+
+    .testimonials-track {
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: transform;
+    }
+
+    .testimonial-slide {
+      min-width: 100%;
+      padding: 0 1rem;
+      box-sizing: border-box;
+    }
+
+    .testimonial-card {
+      background-color: var(--color-warm-ivory);
+      color: var(--color-charcoal);
+      padding: clamp(2.5rem, 5vw, 4rem);
+      border-left: 4px solid var(--color-copper);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      position: relative;
+    }
+
+    .testimonial-stars {
+      display: flex;
+      gap: 0.35rem;
+      color: var(--color-copper);
+      margin-bottom: 1.5rem;
+    }
+    .testimonial-stars svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .testimonial-quote {
+      font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+      font-weight: 500;
+      line-height: 1.6;
+      color: var(--color-charcoal);
+      margin-bottom: 2.25rem;
+      font-style: normal;
+    }
+
+    .testimonial-client {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .testimonial-avatar-box {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--color-copper);
+      flex-shrink: 0;
+      background-color: var(--color-deep-charcoal);
+    }
+    .testimonial-avatar-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .client-name {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--color-charcoal);
+      margin-bottom: 0.2rem;
+    }
+
+    .client-project {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-copper);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .slider-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .slider-arrow {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--color-copper);
+      background-color: transparent;
+      color: var(--color-copper);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-fast);
+    }
+    .slider-arrow:hover {
+      background-color: var(--color-copper);
+      color: var(--color-white);
+    }
+
+    .slider-dots {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .slider-dot {
+      width: 12px;
+      height: 12px;
+      border: 1px solid var(--color-copper);
+      background-color: transparent;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      padding: 0;
+    }
+    .slider-dot.active {
+      background-color: var(--color-copper);
+      width: 28px;
+    }
+
+    /* ==========================================================================
+       SECTION 10: ACHIEVEMENTS
+       ========================================================================== */
+    .achievements-section {
+      position: relative;
+      padding: clamp(5rem, 8vw, 7.5rem) 0;
+      overflow: hidden;
+      background-color: var(--color-deep-charcoal);
+    }
+
+    .stats-bg-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .stats-bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .stats-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(31, 31, 31, 0.9) 0%, rgba(25, 25, 25, 0.94) 100%);
+      z-index: 1;
+    }
+
+    .achievements-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2rem;
+    }
+
+    .stat-counter-box {
+      text-align: center;
+      padding: 2rem 1rem;
+      border: 1px solid rgba(184, 115, 78, 0.25);
+      background: rgba(31, 31, 31, 0.65);
+      backdrop-filter: blur(8px);
+    }
+
+    .counter-value {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 4.5vw, 3.75rem);
+      font-weight: 800;
+      color: var(--color-white);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .counter-label {
+      font-family: var(--font-heading);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-copper);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ==========================================================================
+       SECTION 11: FAQ
+       ========================================================================== */
+    .faq-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 0.5rem;
+    }
+
+    .faq-trigger {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+      cursor: pointer;
+      color: var(--color-white);
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: color 0.3s ease;
+    }
+    .faq-trigger:hover {
+      color: var(--color-copper);
+    }
+
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--color-copper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-copper);
+      flex-shrink: 0;
+      margin-left: 1rem;
+      transition: transform 0.3s ease;
+    }
+    .faq-trigger[aria-expanded="true"] .faq-icon {
+      transform: rotate(45deg);
+      background-color: var(--color-copper);
+      color: var(--color-white);
+    }
+
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+    }
+    .faq-body {
+      padding-bottom: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--color-concrete-grey);
+      line-height: 1.7;
+    }
+
+    /* ==========================================================================
+       SECTION 12: CONTACT AND CONSULTATION
+       ========================================================================== */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: clamp(3rem, 6vw, 5.5rem);
+      align-items: start;
+    }
+
+    .contact-info-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+
+    .contact-detail-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+
+    .contact-icon-box {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-copper);
+      background-color: var(--color-copper-subtle);
+      border: 1px solid rgba(184, 115, 78, 0.3);
+      flex-shrink: 0;
+    }
+
+    .contact-detail-label {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-copper);
+      margin-bottom: 0.25rem;
+    }
+
+    .contact-detail-val {
+      font-size: 1rem;
+      color: var(--color-white);
+      line-height: 1.5;
+    }
+    .contact-detail-val a:hover {
+      color: var(--color-copper);
+    }
+
+    .contact-form-card {
+      background-color: var(--color-charcoal);
+      border: 1px solid rgba(184, 115, 78, 0.3);
+      padding: clamp(2rem, 4vw, 3rem);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-white);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      background-color: var(--color-deep-charcoal);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--color-white);
+      padding: 0.85rem 1rem;
+      font-size: 0.9375rem;
+      transition: var(--transition-fast);
+      width: 100%;
+    }
+    .form-control:focus {
+      border-color: var(--color-copper);
+      outline: none;
+      box-shadow: 0 0 0 1px var(--color-copper);
+    }
+    .form-control.error {
+      border-color: #d9534f;
+    }
+
+    .field-error-msg {
+      font-size: 0.75rem;
+      color: #e57373;
+      margin-top: 0.35rem;
+      display: none;
+    }
+    .field-error-msg.visible {
+      display: block;
+    }
+
+    .form-success-banner {
+      display: none;
+      background-color: rgba(184, 115, 78, 0.15);
+      border: 1px solid var(--color-copper);
+      color: var(--color-white);
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .form-success-banner.visible {
+      display: block;
+    }
+
+    /* ==========================================================================
+       SECTION 13: LOCATION
+       ========================================================================== */
+    .location-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .map-frame-box {
+      width: 100%;
+      height: 380px;
+      border: 1px solid rgba(184, 115, 78, 0.3);
+      position: relative;
+    }
+    .map-frame-box iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      filter: grayscale(85%) contrast(1.1) invert(90%) hue-rotate(180deg);
+    }
+
+    .location-info-card {
+      background-color: var(--color-charcoal);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 2.5rem;
+    }
+
+    /* ==========================================================================
+       SECTION 14: FINAL CALL TO ACTION
+       ========================================================================== */
+    .cta-banner-section {
+      position: relative;
+      padding: clamp(6rem, 10vw, 8.5rem) 0;
+      overflow: hidden;
+      background-color: var(--color-deep-charcoal);
+      text-align: center;
+    }
+
+    .cta-bg-container {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .cta-bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .cta-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(31, 31, 31, 0.85) 0%, rgba(25, 25, 25, 0.95) 100%);
+      z-index: 1;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 2;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .cta-headline {
+      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .cta-text {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      color: var(--color-grey-light);
+      margin-bottom: 2.5rem;
+    }
+
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.25rem;
+    }
+
+    /* ==========================================================================
+       SECTION 15: FOOTER
+       ========================================================================== */
+    .site-footer {
+      background-color: #171717;
+      border-top: 1px solid rgba(184, 115, 78, 0.25);
+      padding: 5rem 0 2rem;
+      color: var(--color-concrete-grey);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1.2fr 1.5fr;
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    .footer-col-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-white);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .footer-col-title::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 24px;
+      height: 2px;
+      background-color: var(--color-copper);
+    }
+
+    .footer-desc {
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      margin-top: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .footer-links-list a {
+      font-size: 0.9375rem;
+      color: var(--color-concrete-grey);
+    }
+    .footer-links-list a:hover {
+      color: var(--color-copper);
+      padding-left: 4px;
+    }
+
+    .footer-social-row {
+      display: flex;
+      gap: 0.85rem;
+    }
+
+    .footer-social-btn {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--color-white);
+      transition: var(--transition-fast);
+    }
+    .footer-social-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+    .footer-social-btn:hover {
+      border-color: var(--color-copper);
+      background-color: var(--color-copper);
+      color: var(--color-white);
+      transform: translateY(-2px);
+    }
+
+    .newsletter-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .newsletter-input-wrap {
+      display: flex;
+    }
+    .newsletter-input {
+      flex-grow: 1;
+      background: var(--color-deep-charcoal);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--color-white);
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+    }
+    .newsletter-input:focus {
+      outline: none;
+      border-color: var(--color-copper);
+    }
+    .newsletter-btn {
+      background-color: var(--color-copper);
+      color: var(--color-white);
+      border: none;
+      padding: 0 1.25rem;
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .newsletter-btn:hover {
+      background-color: var(--color-light-copper);
+      color: var(--color-deep-charcoal);
+    }
+
+    .footer-bottom-bar {
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.875rem;
+    }
+
+    /* ==========================================================================
+       MODALS AND LIGHTBOX
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 15, 15, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .modal-backdrop.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-card {
+      background-color: var(--color-charcoal);
+      border: 1px solid var(--color-copper);
+      max-width: 800px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      padding: 2.5rem;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--color-white);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-fast);
+      z-index: 10;
+    }
+    .modal-close-btn:hover {
+      border-color: var(--color-copper);
+      color: var(--color-copper);
+    }
+
+    .lightbox-viewer {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.96);
+      z-index: 3000;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox-viewer.active {
+      display: flex;
+    }
+
+    .lightbox-img-wrap {
+      max-width: 90vw;
+      max-height: 75vh;
+      position: relative;
+    }
+    .lightbox-img-wrap img {
+      max-width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
+      border: 1px solid var(--color-copper);
+    }
+
+    .lightbox-info {
+      margin-top: 1.25rem;
+      text-align: center;
+    }
+    .lightbox-title {
+      font-size: 1.25rem;
+      color: var(--color-white);
+    }
+    .lightbox-counter {
+      font-size: 0.8125rem;
+      color: var(--color-copper);
+      letter-spacing: 0.1em;
+      margin-top: 0.25rem;
+    }
+
+    .lightbox-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 52px;
+      height: 52px;
+      background: rgba(31, 31, 31, 0.8);
+      border: 1px solid var(--color-copper);
+      color: var(--color-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .lightbox-nav-btn:hover {
+      background-color: var(--color-copper);
+      color: var(--color-white);
+    }
+    .lightbox-prev {
+      left: 2rem;
+    }
+    .lightbox-next {
+      right: 2rem;
+    }
+
+    /* Floating Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 48px;
+      height: 48px;
+      background-color: var(--color-charcoal);
+      border: 1px solid var(--color-copper);
+      color: var(--color-copper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 900;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(12px);
+      transition: var(--transition-smooth);
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background-color: var(--color-copper);
+      color: var(--color-white);
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================== */
+    @media (max-width: 1200px) {
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .team-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+      }
+    }
+
+    @media (max-width: 991px) {
+      .nav-menu, .nav-actions .nav-cta {
+        display: none;
+      }
+      .hamburger-btn {
+        display: flex;
+      }
+      .about-grid, 
+      .contact-grid, 
+      .location-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .projects-editorial-grid {
+        grid-template-columns: 1fr;
+      }
+      .project-card:nth-child(n) {
+        grid-column: span 1;
+      }
+      .project-image-box {
+        height: 320px !important;
+      }
+      .why-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .process-steps-row {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .timeline-track-line {
+        top: 0;
+        bottom: 0;
+        left: 36px;
+        right: auto;
+        width: 2px;
+        height: 100%;
+      }
+      .timeline-progress-line {
+        width: 100%;
+        height: 0%;
+      }
+      .process-step-item {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+        gap: 1.5rem;
+      }
+      .process-badge {
+        flex-shrink: 0;
+        margin-bottom: 0;
+      }
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 767px) {
+      .hero-stats-strip {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+      .services-grid, 
+      .why-grid, 
+      .team-grid, 
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+      .gallery-item.tile-wide, 
+      .gallery-item.tile-tall {
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .lightbox-prev {
+        left: 0.5rem;
+      }
+      .lightbox-next {
+        right: 0.5rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Accessibility Skip Navigation -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ==========================================================================
+       HEADER AND NAVIGATION
+       ========================================================================== -->
+  <header class="site-header" id="site-header">
+    <div class="container nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="brand-logo" aria-label="Nexora Constructions Homepage">
+        <div class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" fill="#1F1F1F" rx="2" stroke="#B8734E" stroke-width="1.5"/>
+            <!-- Geometric Structural Monogram -->
+            <path d="M11 29V11L21 24V11" stroke="#B8734E" stroke-width="2.5" stroke-linecap="square"/>
+            <path d="M21 29L29 18V29" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"/>
+            <circle cx="21" cy="24" r="2" fill="#B8734E"/>
+          </svg>
+        </div>
+        <div class="brand-name">
+          <span class="brand-name-top">NEXORA</span>
+          <span class="brand-name-bottom">CONSTRUCTIONS</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li><a href="#hero" class="nav-link active">Home</a></li>
+          <li><a href="#about" class="nav-link">About Us</a></li>
+          <li><a href="#services" class="nav-link">Services</a></li>
+          <li><a href="#projects" class="nav-link">Projects</a></li>
+          <li><a href="#why-choose-us" class="nav-link">Our Expertise</a></li>
+          <li><a href="#process" class="nav-link">Our Process</a></li>
+          <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+          <li><a href="portal.html" class="nav-link" style="color: var(--color-copper);">Portal</a></li>
+        </ul>
+      </nav>
+
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <a href="#contact" class="btn btn-copper nav-cta">GET A FREE QUOTE</a>
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-menu-overlay" id="mobile-menu" aria-hidden="true">
+    <ul class="mobile-nav-links">
+      <li><a href="#hero" class="mobile-nav-item">Home</a></li>
+      <li><a href="#about" class="mobile-nav-item">About Us</a></li>
+      <li><a href="#services" class="mobile-nav-item">Services</a></li>
+      <li><a href="#projects" class="mobile-nav-item">Projects</a></li>
+      <li><a href="#why-choose-us" class="mobile-nav-item">Our Expertise</a></li>
+      <li><a href="#process" class="mobile-nav-item">Our Process</a></li>
+      <li><a href="#testimonials" class="mobile-nav-item">Testimonials</a></li>
+      <li><a href="#contact" class="mobile-nav-item">Contact</a></li>
+      <li><a href="portal.html" class="mobile-nav-item" style="color: var(--color-copper);">Staff Portal</a></li>
+    </ul>
+    <div>
+      <a href="#contact" class="btn btn-copper" style="width: 100%;">REQUEST A CONSULTATION</a>
+    </div>
+  </div>
+
+  <main id="main-content">
+
+    <!-- ==========================================================================
+         SECTION 1: HERO
+         ========================================================================== -->
+    <section class="hero-section" id="hero">
+      <div class="hero-bg-container">
+        <!-- Exact image file: images/hero.jpg -->
+        <div class="image-box" style="width: 100%; height: 100%; border: none;">
+          <img src="images/hero.jpg" alt="Modern architectural tower designed and engineered by Nexora Constructions" class="hero-bg-image" onerror="handleImgError(this)">
+          <div class="img-fallback">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            <span class="fallback-label">images/hero.jpg</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="hero-grid-overlay"></div>
+
+      <div class="container hero-content">
+        <div class="hero-label">ENGINEERING EXCELLENCE, ARCHITECTURAL INNOVATION</div>
+        <h1 class="hero-headline">
+          <span>BUILDING THE FUTURE.</span>
+          <span class="text-copper">SHAPING THE WORLD.</span>
+        </h1>
+        <p class="hero-description">
+          We transform ambitious ideas into extraordinary structures through innovative engineering, exceptional craftsmanship, and uncompromising quality.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-copper">EXPLORE OUR PROJECTS</a>
+          <a href="#contact" class="btn btn-outline-white">START YOUR PROJECT</a>
+        </div>
+
+        <!-- Statistics strip under content -->
+        <div class="hero-stats-strip">
+          <div class="hero-stat-item">
+            <div class="hero-stat-number" data-stat="completedProjects">250+</div>
+            <div class="hero-stat-label">COMPLETED PROJECTS</div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-number" data-stat="yearsExperience">15+</div>
+            <div class="hero-stat-label">YEARS OF EXPERIENCE</div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-number" data-stat="satisfiedClients">120+</div>
+            <div class="hero-stat-label">SATISFIED CLIENTS</div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-number" data-stat="professionalExperts">35+</div>
+            <div class="hero-stat-label">PROFESSIONAL EXPERTS</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-scroll-indicator" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 2: ABOUT US
+         ========================================================================== -->
+    <section class="section section-dark" id="about">
+      <div class="container">
+        <div class="about-grid">
+          
+          <!-- Left Column: about.jpg with thin copper offset frame -->
+          <div class="about-image-wrapper">
+            <div class="about-offset-frame" aria-hidden="true"></div>
+            <div class="image-box about-image-box">
+              <img src="images/about.jpg" alt="Nexora construction engineers and architects reviewing active structural drawings" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                <span class="fallback-label">images/about.jpg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Content -->
+          <div class="about-content">
+            <div class="section-label">WHO WE ARE</div>
+            <h2 class="section-title">Building Excellence Through Vision, Innovation and Integrity.</h2>
+            <p>
+              We are a dedicated construction and architectural company focused on creating exceptional spaces and long lasting structures. Our team combines technical expertise, innovative construction methods, and professional project management to deliver outstanding results.
+            </p>
+            <p>
+              Every project reflects our commitment to quality, precision, safety, and customer satisfaction. From groundbreaking conceptual designs to final turn key delivery, we uphold the highest international construction benchmarks.
+            </p>
+
+            <div class="about-features-grid">
+              <div class="about-feature-item">
+                <div class="about-feature-icon" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div class="about-feature-text">Professional Engineering Team</div>
+              </div>
+
+              <div class="about-feature-item">
+                <div class="about-feature-icon" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <div class="about-feature-text">High Quality Construction Materials</div>
+              </div>
+
+              <div class="about-feature-item">
+                <div class="about-feature-icon" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
+                <div class="about-feature-text">Advanced Construction Technology</div>
+              </div>
+
+              <div class="about-feature-item">
+                <div class="about-feature-icon" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div class="about-feature-text">Reliable Project Management</div>
+              </div>
+            </div>
+
+            <a href="#why-choose-us" class="btn btn-copper">DISCOVER OUR STORY</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 3: SERVICES
+         ========================================================================== -->
+    <section class="section section-deep" id="services">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-label">OUR EXPERTISE</div>
+          <h2 class="section-title">Comprehensive Construction Solutions.</h2>
+          <p class="section-subtitle">
+            From architectural planning to final construction, we deliver integrated solutions designed around quality, performance, and innovation.
+          </p>
+        </div>
+
+        <div class="services-grid">
+          
+          <!-- Card 1: Residential Construction -->
+          <article class="service-card">
+            <div class="image-box service-image-box">
+              <img src="images/service_residential.jpg" alt="Bespoke luxury residential home built with architectural precision" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                <span class="fallback-label">images/service_residential.jpg</span>
+              </div>
+            </div>
+            <div class="service-card-body">
+              <div class="service-icon-box" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <h3 class="service-title">Residential Construction</h3>
+              <p class="service-desc">Tailored private residences and luxury estates crafted with architectural refinement and enduring structural integrity.</p>
+              <a href="#contact" class="service-link">
+                <span>EXPLORE SERVICE</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 2: Commercial Construction -->
+          <article class="service-card">
+            <div class="image-box service-image-box">
+              <img src="images/service_commercial.jpg" alt="Modern corporate business tower engineered with steel and glass" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2"/></svg>
+                <span class="fallback-label">images/service_commercial.jpg</span>
+              </div>
+            </div>
+            <div class="service-card-body">
+              <div class="service-icon-box" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="22" x2="9" y2="2"/><line x1="15" y1="22" x2="15" y2="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
+              </div>
+              <h3 class="service-title">Commercial Construction</h3>
+              <p class="service-desc">Sophisticated corporate towers, commercial office complexes, and retail centers built for maximum efficiency and longevity.</p>
+              <a href="#contact" class="service-link">
+                <span>EXPLORE SERVICE</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 3: Architectural Design -->
+          <article class="service-card">
+            <div class="image-box service-image-box">
+              <img src="images/service_architectural.jpg" alt="Architectural drawings and geometric blueprint plans" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                <span class="fallback-label">images/service_architectural.jpg</span>
+              </div>
+            </div>
+            <div class="service-card-body">
+              <div class="service-icon-box" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              </div>
+              <h3 class="service-title">Architectural Design</h3>
+              <p class="service-desc">Visionary conceptual modeling, master layouts, and spatial planning balancing contemporary aesthetics with functional performance.</p>
+              <a href="#contact" class="service-link">
+                <span>EXPLORE SERVICE</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 4: Interior Design -->
+          <article class="service-card">
+            <div class="image-box service-image-box">
+              <img src="images/service_interior.jpg" alt="Refined luxury interior design with bespoke materials and lighting" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                <span class="fallback-label">images/service_interior.jpg</span>
+              </div>
+            </div>
+            <div class="service-card-body">
+              <div class="service-icon-box" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              </div>
+              <h3 class="service-title">Interior Design</h3>
+              <p class="service-desc">Bespoke luxury interior concepts featuring custom architectural millwork, balanced natural lighting, and refined acoustic comfort.</p>
+              <a href="#contact" class="service-link">
+                <span>EXPLORE SERVICE</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 5: Renovation and Remodeling -->
+          <article class="service-card">
+            <div class="image-box service-image-box">
+              <img src="images/service_renovation.jpg" alt="Architectural renovation transforming historical structural spaces" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                <span class="fallback-label">images/service_renovation.jpg</span>
+              </div>
+            </div>
+            <div class="service-card-body">
+              <div class="service-icon-box" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </div>
+              <h3 class="service-title">Renovation and Remodeling</h3>
+              <p class="service-desc">Complete structural revitalizations and contemporary upgrades executed with minimal operational disruption and meticulous craftsmanship.</p>
+              <a href="#contact" class="service-link">
+                <span>EXPLORE SERVICE</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 6: Industrial Construction -->
+          <article class="service-card">
+            <div class="image-box service-image-box">
+              <img src="images/service_industrial.jpg" alt="Heavy industrial logistics complex with structural steel framing" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/></svg>
+                <span class="fallback-label">images/service_industrial.jpg</span>
+              </div>
+            </div>
+            <div class="service-card-body">
+              <div class="service-icon-box" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              </div>
+              <h3 class="service-title">Industrial Construction</h3>
+              <p class="service-desc">State of the art logistics centers, manufacturing facilities, and industrial warehouses engineered to strict international safety standards.</p>
+              <a href="#contact" class="service-link">
+                <span>EXPLORE SERVICE</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 7: Civil Engineering -->
+          <article class="service-card">
+            <div class="image-box service-image-box">
+              <img src="images/service_civil.jpg" alt="Civil engineering infrastructure development and foundation works" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/></svg>
+                <span class="fallback-label">images/service_civil.jpg</span>
+              </div>
+            </div>
+            <div class="service-card-body">
+              <div class="service-icon-box" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M7 12v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-5M12 2v10"/></svg>
+              </div>
+              <h3 class="service-title">Civil Engineering</h3>
+              <p class="service-desc">Essential public infrastructure, deep foundation systems, earthworks, and sustainable site utilities built for community resilience.</p>
+              <a href="#contact" class="service-link">
+                <span>EXPLORE SERVICE</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 8: Project Management -->
+          <article class="service-card">
+            <div class="image-box service-image-box">
+              <img src="images/service_management.jpg" alt="Construction project director coordinating schedules and resources" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+                <span class="fallback-label">images/service_management.jpg</span>
+              </div>
+            </div>
+            <div class="service-card-body">
+              <div class="service-icon-box" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </div>
+              <h3 class="service-title">Project Management</h3>
+              <p class="service-desc">Complete project governance coordinating procurement, timeline milestones, cost compliance, and transparent reporting.</p>
+              <a href="#contact" class="service-link">
+                <span>EXPLORE SERVICE</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 4: FEATURED PROJECTS
+         ========================================================================== -->
+    <section class="section section-dark" id="projects">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-label">OUR PORTFOLIO</div>
+          <h2 class="section-title">Turning Architectural Visions Into Reality.</h2>
+          <p class="section-subtitle">
+            Explore our selected construction and architectural projects, showcasing our commitment to precision, creativity, and exceptional execution.
+          </p>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="projects-filter-bar" role="tablist" aria-label="Project Categories">
+          <button class="filter-btn active" data-filter="all">ALL PROJECTS</button>
+          <button class="filter-btn" data-filter="residential">RESIDENTIAL</button>
+          <button class="filter-btn" data-filter="commercial">COMMERCIAL</button>
+          <button class="filter-btn" data-filter="industrial">INDUSTRIAL</button>
+          <button class="filter-btn" data-filter="interior">INTERIOR DESIGN</button>
+        </div>
+
+        <!-- Asymmetrical Editorial Grid -->
+        <div class="projects-editorial-grid" id="projects-grid">
+
+          <!-- Project 1: The Modern Residence (Residential) -->
+          <article class="project-card" data-category="residential">
+            <div class="image-box project-image-box">
+              <img src="images/project_residence.jpg" alt="The Modern Residence architectural luxury home in Beverly Hills" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                <span class="fallback-label">images/project_residence.jpg</span>
+              </div>
+            </div>
+            <div class="project-overlay"></div>
+            <div class="project-card-content">
+              <span class="project-category-tag">Residential</span>
+              <h3 class="project-title">The Modern Residence</h3>
+              <div class="project-location">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Beverly Hills, California</span>
+              </div>
+              <p class="project-excerpt">A cantilevered concrete and glass luxury residence harmonizing panoramic hillside views with sustainable solar architecture.</p>
+              <button class="project-btn-details" data-project="residence">View Project Details</button>
+            </div>
+          </article>
+
+          <!-- Project 2: Corporate Business Tower (Commercial) -->
+          <article class="project-card" data-category="commercial">
+            <div class="image-box project-image-box">
+              <img src="images/project_tower.jpg" alt="Corporate Business Tower high-rise commercial engineering in Chicago" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2"/></svg>
+                <span class="fallback-label">images/project_tower.jpg</span>
+              </div>
+            </div>
+            <div class="project-overlay"></div>
+            <div class="project-card-content">
+              <span class="project-category-tag">Commercial</span>
+              <h3 class="project-title">Corporate Business Tower</h3>
+              <div class="project-location">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Downtown Financial District, Chicago</span>
+              </div>
+              <p class="project-excerpt">A forty two story commercial headquarters engineering landmark featuring high performance curtain wall glazing.</p>
+              <button class="project-btn-details" data-project="tower">View Project Details</button>
+            </div>
+          </article>
+
+          <!-- Project 3: Industrial Development (Industrial) -->
+          <article class="project-card" data-category="industrial">
+            <div class="image-box project-image-box">
+              <img src="images/project_industrial.jpg" alt="Industrial Development advanced manufacturing hub in Dallas" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 20h20M7 20V10M17 20V6"/></svg>
+                <span class="fallback-label">images/project_industrial.jpg</span>
+              </div>
+            </div>
+            <div class="project-overlay"></div>
+            <div class="project-card-content">
+              <span class="project-category-tag">Industrial</span>
+              <h3 class="project-title">Industrial Development</h3>
+              <div class="project-location">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Logistics Hub, Dallas</span>
+              </div>
+              <p class="project-excerpt">Advanced automated fulfillment complex built with heavy post tensioned slabs and high bay structural steel.</p>
+              <button class="project-btn-details" data-project="industrial">View Project Details</button>
+            </div>
+          </article>
+
+          <!-- Project 4: Luxury Interior Concept (Interior Design) -->
+          <article class="project-card" data-category="interior">
+            <div class="image-box project-image-box">
+              <img src="images/project_interior.jpg" alt="Luxury Interior Concept penthouse renovation in Manhattan" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                <span class="fallback-label">images/project_interior.jpg</span>
+              </div>
+            </div>
+            <div class="project-overlay"></div>
+            <div class="project-card-content">
+              <span class="project-category-tag">Interior Design</span>
+              <h3 class="project-title">Luxury Interior Concept</h3>
+              <div class="project-location">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Manhattan Penthouse, New York</span>
+              </div>
+              <p class="project-excerpt">Bespoke penthouse interior integrating architectural bronze, fluted Italian marble, and custom acoustic ceiling architecture.</p>
+              <button class="project-btn-details" data-project="interior">View Project Details</button>
+            </div>
+          </article>
+
+          <!-- Project 5: Urban Living Complex (Residential) -->
+          <article class="project-card" data-category="residential">
+            <div class="image-box project-image-box">
+              <img src="images/project_living_complex.jpg" alt="Urban Living Complex waterfront multi-family residences in Vancouver" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2"/></svg>
+                <span class="fallback-label">images/project_living_complex.jpg</span>
+              </div>
+            </div>
+            <div class="project-overlay"></div>
+            <div class="project-card-content">
+              <span class="project-category-tag">Residential</span>
+              <h3 class="project-title">Urban Living Complex</h3>
+              <div class="project-location">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Waterfront District, Vancouver</span>
+              </div>
+              <p class="project-excerpt">Sustainable multi family residential community with terraced garden balconies and geothermal thermal regulation.</p>
+              <button class="project-btn-details" data-project="living_complex">View Project Details</button>
+            </div>
+          </article>
+
+          <!-- Project 6: Modern Office Headquarters (Commercial) -->
+          <article class="project-card" data-category="commercial">
+            <div class="image-box project-image-box">
+              <img src="images/project_office.jpg" alt="Modern Office Headquarters technology campus in Austin" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+                <span class="fallback-label">images/project_office.jpg</span>
+              </div>
+            </div>
+            <div class="project-overlay"></div>
+            <div class="project-card-content">
+              <span class="project-category-tag">Commercial</span>
+              <h3 class="project-title">Modern Office Headquarters</h3>
+              <div class="project-location">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Innovation Corridor, Austin</span>
+              </div>
+              <p class="project-excerpt">A corporate technology campus delivering flexible collaborative work floors and net zero energy efficiency.</p>
+              <button class="project-btn-details" data-project="office">View Project Details</button>
+            </div>
+          </article>
+
+        </div>
+
+        <div style="text-align: center;">
+          <a href="#contact" class="btn btn-outline-copper">VIEW ALL PROJECTS</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 5: WHY CHOOSE US
+         ========================================================================== -->
+    <section class="section why-section" id="why-choose-us">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-label">OUR DISTINCTION</div>
+          <h2 class="section-title">WHY CHOOSE OUR EXPERTISE?</h2>
+          <p class="section-subtitle">
+            We believe every successful project begins with trust, precision, and a commitment to excellence.
+          </p>
+        </div>
+
+        <div class="why-grid">
+          
+          <div class="why-block">
+            <div class="why-icon-wrap" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <h3 class="why-title">Quality Craftsmanship</h3>
+            <p class="why-text">We maintain uncompromising quality standards across every phase of structural engineering and finish installation.</p>
+          </div>
+
+          <div class="why-block">
+            <div class="why-icon-wrap" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3 class="why-title">Experienced Professionals</h3>
+            <p class="why-text">Our international team brings verified mastery in architecture, structural engineering, and commercial site supervision.</p>
+          </div>
+
+          <div class="why-block">
+            <div class="why-icon-wrap" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <h3 class="why-title">Innovative Technology</h3>
+            <p class="why-text">We leverage advanced digital modeling, robotic surveying, and sustainable construction practices for absolute accuracy.</p>
+          </div>
+
+          <div class="why-block">
+            <div class="why-icon-wrap" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 class="why-title">Safety First</h3>
+            <p class="why-text">Zero accident safety protocols, proactive hazard mitigations, and comprehensive site inspections protect our workers and your asset.</p>
+          </div>
+
+          <div class="why-block">
+            <div class="why-icon-wrap" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3 class="why-title">On Time Delivery</h3>
+            <p class="why-text">Rigorous schedule tracking and disciplined milestone management guarantee your structure is completed right on calendar.</p>
+          </div>
+
+          <div class="why-block">
+            <div class="why-icon-wrap" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3 class="why-title">Transparent Communication</h3>
+            <p class="why-text">You receive clear weekly progress summaries, straightforward budget accounting, and a single dedicated director contact.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 6: CONSTRUCTION PROCESS
+         ========================================================================== -->
+    <section class="section section-dark" id="process">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-label">HOW WE WORK</div>
+          <h2 class="section-title">FROM CONCEPT TO COMPLETION.</h2>
+          <p class="section-subtitle">
+            Our systematic approach ensures smooth coordination, complete transparency, and flawless execution from your first consultation to final key handover.
+          </p>
+        </div>
+
+        <div class="process-timeline-wrap">
+          <div class="timeline-track-line" aria-hidden="true">
+            <div class="timeline-progress-line" id="timeline-progress"></div>
+          </div>
+
+          <div class="process-steps-row">
+            
+            <!-- Step 1 -->
+            <div class="process-step-item">
+              <div class="process-badge">
+                <span class="process-number">01</span>
+              </div>
+              <h3 class="process-step-title">Initial Consultation</h3>
+              <p class="process-step-desc">Understand requirements, goals, budget and expectations.</p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="process-step-item">
+              <div class="process-badge">
+                <span class="process-number">02</span>
+              </div>
+              <h3 class="process-step-title">Planning and Design</h3>
+              <p class="process-step-desc">Prepare concepts, drawings, layouts and plans.</p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="process-step-item">
+              <div class="process-badge">
+                <span class="process-number">03</span>
+              </div>
+              <h3 class="process-step-title">Budget and Preparation</h3>
+              <p class="process-step-desc">Finalize materials, cost estimates, schedule and resources.</p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="process-step-item">
+              <div class="process-badge">
+                <span class="process-number">04</span>
+              </div>
+              <h3 class="process-step-title">Construction and Execution</h3>
+              <p class="process-step-desc">Build with supervision, quality checks and safety standards.</p>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="process-step-item">
+              <div class="process-badge">
+                <span class="process-number">05</span>
+              </div>
+              <h3 class="process-step-title">Final Inspection and Handover</h3>
+              <p class="process-step-desc">Complete inspections, finishing work and delivery.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 7: TEAM
+         ========================================================================== -->
+    <section class="section section-deep" id="team">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-label">LEADERSHIP</div>
+          <h2 class="section-title">MEET THE PEOPLE BEHIND EVERY PROJECT.</h2>
+          <p class="section-subtitle">
+            A cohesive multidisciplinary leadership team combining decades of engineering expertise, architectural innovation, and rigorous project direction.
+          </p>
+        </div>
+
+        <div class="team-grid">
+          
+          <!-- Team Member 1 -->
+          <article class="team-card">
+            <div class="image-box team-image-box">
+              <img src="images/team_director.jpg" alt="Alexander Vance Managing Director at Nexora Constructions" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+                <span class="fallback-label">images/team_director.jpg</span>
+              </div>
+            </div>
+            <div class="team-info">
+              <div class="team-position">Managing Director</div>
+              <h3 class="team-name">Alexander Vance</h3>
+              <p class="team-bio">Directs global operations with over twenty years of leadership in commercial high rise construction and engineering development.</p>
+              <a href="#contact" class="team-social-link" aria-label="Alexander Vance LinkedIn profile">
+                <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 1 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.39 9.74v-8.37H5.07v8.37h2.78z"/></svg>
+                <span>CONNECT</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Team Member 2 -->
+          <article class="team-card">
+            <div class="image-box team-image-box">
+              <img src="images/team_architect.jpg" alt="Elena Rostova Chief Architect at Nexora Constructions" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+                <span class="fallback-label">images/team_architect.jpg</span>
+              </div>
+            </div>
+            <div class="team-info">
+              <div class="team-position">Chief Architect</div>
+              <h3 class="team-name">Elena Rostova</h3>
+              <p class="team-bio">Award winning architectural principal focused on sculptural modernism, passive solar design, and sustainable luxury living.</p>
+              <a href="#contact" class="team-social-link" aria-label="Elena Rostova LinkedIn profile">
+                <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 1 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.39 9.74v-8.37H5.07v8.37h2.78z"/></svg>
+                <span>CONNECT</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Team Member 3 -->
+          <article class="team-card">
+            <div class="image-box team-image-box">
+              <img src="images/team_engineer.jpg" alt="Marcus Sterling Civil Engineer at Nexora Constructions" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+                <span class="fallback-label">images/team_engineer.jpg</span>
+              </div>
+            </div>
+            <div class="team-info">
+              <div class="team-position">Civil Engineer</div>
+              <h3 class="team-name">Marcus Sterling</h3>
+              <p class="team-bio">Structural authority specializing in seismic resilience, post tensioned foundations, and advanced structural steel systems.</p>
+              <a href="#contact" class="team-social-link" aria-label="Marcus Sterling LinkedIn profile">
+                <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 1 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.39 9.74v-8.37H5.07v8.37h2.78z"/></svg>
+                <span>CONNECT</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Team Member 4 -->
+          <article class="team-card">
+            <div class="image-box team-image-box">
+              <img src="images/team_manager.jpg" alt="Sarah Jenkins Project Manager at Nexora Constructions" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+                <span class="fallback-label">images/team_manager.jpg</span>
+              </div>
+            </div>
+            <div class="team-info">
+              <div class="team-position">Project Manager</div>
+              <h3 class="team-name">Sarah Jenkins</h3>
+              <p class="team-bio">Manages multimillion dollar procurement timelines and trade logistics, ensuring zero delay schedules and budget compliance.</p>
+              <a href="#contact" class="team-social-link" aria-label="Sarah Jenkins LinkedIn profile">
+                <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 1 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.39 9.74v-8.37H5.07v8.37h2.78z"/></svg>
+                <span>CONNECT</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Team Member 5 -->
+          <article class="team-card">
+            <div class="image-box team-image-box">
+              <img src="images/team_supervisor.jpg" alt="David Chen Site Supervisor at Nexora Constructions" loading="lazy" onerror="handleImgError(this)">
+              <div class="img-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+                <span class="fallback-label">images/team_supervisor.jpg</span>
+              </div>
+            </div>
+            <div class="team-info">
+              <div class="team-position">Site Supervisor</div>
+              <h3 class="team-name">David Chen</h3>
+              <p class="team-bio">Enforces strict safety benchmarks, trade quality inspections, and on site daily execution across all structural divisions.</p>
+              <a href="#contact" class="team-social-link" aria-label="David Chen LinkedIn profile">
+                <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 1 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.39 9.74v-8.37H5.07v8.37h2.78z"/></svg>
+                <span>CONNECT</span>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 8: PROJECT GALLERY
+         ========================================================================== -->
+    <section class="section section-dark" id="gallery">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-label">VISUAL ARCHIVE</div>
+          <h2 class="section-title">Project Gallery.</h2>
+          <p class="section-subtitle">
+            A visual overview of our construction progress, structural engineering milestones, architectural detailing, and finished environments.
+          </p>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid">
+          
+          <!-- Tile 01: Wide -->
+          <div class="gallery-item tile-wide" data-gallery-index="0" data-title="Curvilinear Facade Glazing" data-category="Exteriors">
+            <img src="images/gallery_01.jpg" alt="Curvilinear glass facade installation on modern architectural tower" loading="lazy" onerror="handleImgError(this)">
+            <div class="gallery-item-overlay">
+              <span class="gallery-category-label">Exteriors</span>
+              <div class="gallery-item-title">Curvilinear Facade Glazing</div>
+            </div>
+          </div>
+
+          <!-- Tile 02: Tall -->
+          <div class="gallery-item tile-tall" data-gallery-index="1" data-title="Reinforced Structural Concrete Pour" data-category="Construction Progress">
+            <img src="images/gallery_02.jpg" alt="Foundation concrete pouring on active commercial construction site" loading="lazy" onerror="handleImgError(this)">
+            <div class="gallery-item-overlay">
+              <span class="gallery-category-label">Construction Progress</span>
+              <div class="gallery-item-title">Reinforced Structural Concrete Pour</div>
+            </div>
+          </div>
+
+          <!-- Tile 03 -->
+          <div class="gallery-item" data-gallery-index="2" data-title="Structural Steel Truss Framing" data-category="Structural Engineering">
+            <img src="images/gallery_03.jpg" alt="High bay structural steel trusses engineered for seismic resilience" loading="lazy" onerror="handleImgError(this)">
+            <div class="gallery-item-overlay">
+              <span class="gallery-category-label">Structural Engineering</span>
+              <div class="gallery-item-title">Structural Steel Truss Framing</div>
+            </div>
+          </div>
+
+          <!-- Tile 04 -->
+          <div class="gallery-item" data-gallery-index="3" data-title="Fluted Marble Cladding" data-category="Interior Finishing">
+            <img src="images/gallery_04.jpg" alt="Hand finished fluted Italian marble cladding in luxury corporate lobby" loading="lazy" onerror="handleImgError(this)">
+            <div class="gallery-item-overlay">
+              <span class="gallery-category-label">Interior Finishing</span>
+              <div class="gallery-item-title">Fluted Marble Cladding</div>
+            </div>
+          </div>
+
+          <!-- Tile 05 -->
+          <div class="gallery-item" data-gallery-index="4" data-title="Perforated Copper Louvers" data-category="Architectural Details">
+            <img src="images/gallery_05.jpg" alt="Precision engineered metallic copper louvers for passive thermal shading" loading="lazy" onerror="handleImgError(this)">
+            <div class="gallery-item-overlay">
+              <span class="gallery-category-label">Architectural Details</span>
+              <div class="gallery-item-title">Perforated Copper Louvers</div>
+            </div>
+          </div>
+
+          <!-- Tile 06: Wide -->
+          <div class="gallery-item tile-wide" data-gallery-index="5" data-title="Infinity Edge Hillside Residence" data-category="Residential Spaces">
+            <img src="images/gallery_06.jpg" alt="Cantilevered residential terrace with infinity edge swimming pool" loading="lazy" onerror="handleImgError(this)">
+            <div class="gallery-item-overlay">
+              <span class="gallery-category-label">Residential Spaces</span>
+              <div class="gallery-item-title">Infinity Edge Hillside Residence</div>
+            </div>
+          </div>
+
+          <!-- Tile 07 -->
+          <div class="gallery-item" data-gallery-index="6" data-title="Atrium Skylight Assembly" data-category="Commercial Projects">
+            <img src="images/gallery_07.jpg" alt="Multi story glass skylight atrium inside corporate headquarters" loading="lazy" onerror="handleImgError(this)">
+            <div class="gallery-item-overlay">
+              <span class="gallery-category-label">Commercial Projects</span>
+              <div class="gallery-item-title">Atrium Skylight Assembly</div>
+            </div>
+          </div>
+
+          <!-- Tile 08: Tall -->
+          <div class="gallery-item tile-tall" data-gallery-index="7" data-title="Deep Caisson Foundation Works" data-category="Structural Engineering">
+            <img src="images/gallery_08.jpg" alt="Deep geotechnical caisson drilling for seismic skyscraper stability" loading="lazy" onerror="handleImgError(this)">
+            <div class="gallery-item-overlay">
+              <span class="gallery-category-label">Structural Engineering</span>
+              <div class="gallery-item-title">Deep Caisson Foundation Works</div>
+            </div>
+          </div>
+
+          <!-- Tile 09 -->
+          <div class="gallery-item" data-gallery-index="8" data-title="Cantilevered Staircase Sculpture" data-category="Architectural Details">
+            <img src="images/gallery_09.jpg" alt="Floating helical steel and walnut staircase with concealed anchor points" loading="lazy" onerror="handleImgError(this)">
+            <div class="gallery-item-overlay">
+              <span class="gallery-category-label">Architectural Details</span>
+              <div class="gallery-item-title">Cantilevered Staircase Sculpture</div>
+            </div>
+          </div>
+
+          <!-- Tile 10 -->
+          <div class="gallery-item" data-gallery-index="9" data-title="Acoustic Ceiling Architecture" data-category="Interior Finishing">
+            <img src="images/gallery_10.jpg" alt="Custom micro perforated timber acoustic ceiling in boardroom" loading="lazy" onerror="handleImgError(this)">
+            <div class="gallery-item-overlay">
+              <span class="gallery-category-label">Interior Finishing</span>
+              <div class="gallery-item-title">Acoustic Ceiling Architecture</div>
+            </div>
+          </div>
+
+          <!-- Tile 11: Wide -->
+          <div class="gallery-item tile-wide" data-gallery-index="10" data-title="High Bay Logistics Distribution Hall" data-category="Commercial Projects">
+            <img src="images/gallery_11.jpg" alt="Wide span industrial logistics hall engineered with clear height clearances" loading="lazy" onerror="handleImgError(this)">
+            <div class="gallery-item-overlay">
+              <span class="gallery-category-label">Commercial Projects</span>
+              <div class="gallery-item-title">High Bay Logistics Distribution Hall</div>
+            </div>
+          </div>
+
+          <!-- Tile 12 -->
+          <div class="gallery-item" data-gallery-index="11" data-title="Refined Penthouse Living Room" data-category="Residential Spaces">
+            <img src="images/gallery_12.jpg" alt="Completed luxury residential living room overlooking urban skyline" loading="lazy" onerror="handleImgError(this)">
+            <div class="gallery-item-overlay">
+              <span class="gallery-category-label">Residential Spaces</span>
+              <div class="gallery-item-title">Refined Penthouse Living Room</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 9: TESTIMONIALS
+         ========================================================================== -->
+    <section class="section section-ivory" id="testimonials">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-label">CLIENT VOICES</div>
+          <h2 class="section-title">TRUST BUILT THROUGH EVERY PROJECT.</h2>
+          <p class="section-subtitle">
+            Read direct feedback from private estate owners, commercial developers, and institutional partners who have partnered with Nexora.
+          </p>
+        </div>
+
+        <div class="testimonials-slider-wrap" id="testimonials-slider">
+          <div class="testimonials-track" id="testimonial-track">
+            
+            <!-- Slide 1 -->
+            <div class="testimonial-slide">
+              <div class="testimonial-card">
+                <div class="testimonial-stars" aria-label="Five Star Rating">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <blockquote class="testimonial-quote">
+                  "An outstanding experience from the initial planning stage to the final delivery. The team demonstrated professionalism, excellent communication, and impressive attention to detail."
+                </blockquote>
+                <div class="testimonial-client">
+                  <div class="testimonial-avatar-box">
+                    <img src="images/client_1.jpg" alt="Client Jonathan Mercer" loading="lazy" onerror="handleImgError(this)">
+                  </div>
+                  <div>
+                    <div class="client-name">Jonathan Mercer</div>
+                    <div class="client-project">Private Waterfront Residence</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="testimonial-slide">
+              <div class="testimonial-card">
+                <div class="testimonial-stars" aria-label="Five Star Rating">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <blockquote class="testimonial-quote">
+                  "Nexora delivered our corporate commercial headquarters ahead of schedule without sacrificing architectural precision. Their proactive team resolved complex structural hurdles before they impacted our budget."
+                </blockquote>
+                <div class="testimonial-client">
+                  <div class="testimonial-avatar-box">
+                    <img src="images/client_2.jpg" alt="Client Katherine Brooks" loading="lazy" onerror="handleImgError(this)">
+                  </div>
+                  <div>
+                    <div class="client-name">Katherine Brooks</div>
+                    <div class="client-project">Corporate Business Tower</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="testimonial-slide">
+              <div class="testimonial-card">
+                <div class="testimonial-stars" aria-label="Five Star Rating">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <blockquote class="testimonial-quote">
+                  "The structural engineering precision and clear cost accountability set Nexora apart from every other builder. Their team was honest, responsive, and relentlessly focused on quality."
+                </blockquote>
+                <div class="testimonial-client">
+                  <div class="testimonial-avatar-box">
+                    <img src="images/client_3.jpg" alt="Client David Montgomery" loading="lazy" onerror="handleImgError(this)">
+                  </div>
+                  <div>
+                    <div class="client-name">David Montgomery</div>
+                    <div class="client-project">Industrial Logistics Center</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Controls -->
+          <div class="slider-controls">
+            <button class="slider-arrow" id="slider-prev" aria-label="Previous Testimonial">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="slider-dots" id="slider-dots" role="tablist">
+              <button class="slider-dot active" data-slide="0" aria-label="Go to slide 1"></button>
+              <button class="slider-dot" data-slide="1" aria-label="Go to slide 2"></button>
+              <button class="slider-dot" data-slide="2" aria-label="Go to slide 3"></button>
+            </div>
+            <button class="slider-arrow" id="slider-next" aria-label="Next Testimonial">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 10: ACHIEVEMENTS
+         ========================================================================== -->
+    <section class="achievements-section" id="achievements">
+      <div class="stats-bg-wrap">
+        <img src="images/stats_bg.jpg" alt="Architectural structural engineering details" class="stats-bg-image" loading="lazy" onerror="handleImgError(this)">
+        <div class="stats-overlay"></div>
+      </div>
+
+      <div class="container achievements-content">
+        <div class="section-header text-center">
+          <div class="section-label">MEASURABLE EXCELLENCE</div>
+          <h2 class="section-title">Our Global Achievements.</h2>
+          <p class="section-subtitle">
+            Consistent performance and verified delivery across decades of high value construction operations.
+          </p>
+        </div>
+
+        <div class="stats-grid">
+          
+          <div class="stat-counter-box">
+            <div class="counter-value" id="stat-completed" data-target="250">0</div>
+            <div class="counter-label">Successful Projects</div>
+          </div>
+
+          <div class="stat-counter-box">
+            <div class="counter-value" id="stat-clients" data-target="120">0</div>
+            <div class="counter-label">Happy Clients</div>
+          </div>
+
+          <div class="stat-counter-box">
+            <div class="counter-value" id="stat-years" data-target="15">0</div>
+            <div class="counter-label">Years of Experience</div>
+          </div>
+
+          <div class="stat-counter-box">
+            <div class="counter-value" id="stat-experts" data-target="35">0</div>
+            <div class="counter-label">Skilled Professionals</div>
+          </div>
+
+          <div class="stat-counter-box">
+            <div class="counter-value" id="stat-satisfaction" data-target="98" data-suffix="%">0</div>
+            <div class="counter-label">Client Satisfaction</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 11: FAQ
+         ========================================================================== -->
+    <section class="section section-dark" id="faq">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-label">QUESTIONS AND ANSWERS</div>
+          <h2 class="section-title">Frequently Asked Questions.</h2>
+          <p class="section-subtitle">
+            Clear, honest answers about our construction capabilities, architectural services, estimating methods, and timeline planning.
+          </p>
+        </div>
+
+        <div class="faq-accordion" id="faq-accordion">
+          
+          <!-- FAQ 1 -->
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" aria-controls="faq-ans-1">
+              <span>What types of construction projects do you handle?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-content" id="faq-ans-1">
+              <div class="faq-body">
+                We oversee high end residential estates, multi unit luxury living complexes, corporate commercial towers, modern industrial facilities, and civic engineering developments. Our versatile team provides full lifecycle capabilities from initial architectural design through structural build and interior handover.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 2 -->
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" aria-controls="faq-ans-2">
+              <span>Do you provide architectural design services?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-content" id="faq-ans-2">
+              <div class="faq-body">
+                Yes. We have an in house architectural design studio that creates complete conceptual designs, master site plans, structural blueprints, and photorealistic three dimensional renderings. We also collaborate seamlessly with external architectural firms if you already have an appointed designer.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 3 -->
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" aria-controls="faq-ans-3">
+              <span>How can I request a project quotation?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-content" id="faq-ans-3">
+              <div class="faq-body">
+                You can submit an inquiry through our consultation form on this website or reach out directly to our estimating team by telephone or email. We will arrange a preliminary consultation to assess your project scope, site conditions, timeline, and architectural plans before issuing a detailed transparent estimate.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 4 -->
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" aria-controls="faq-ans-4">
+              <span>Do you handle residential and commercial projects?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-content" id="faq-ans-4">
+              <div class="faq-body">
+                Yes. Our portfolio is evenly balanced between bespoke residential developments and substantial commercial and industrial builds. Each sector is led by dedicated project directors with deep specialized knowledge in relevant building codes, commercial logistics, or residential craftsmanship.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 5 -->
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" aria-controls="faq-ans-5">
+              <span>How do you ensure construction quality?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-content" id="faq-ans-5">
+              <div class="faq-body">
+                Quality assurance is integrated into every work package through strict multistage inspection protocols. We only source certified premium materials from vetted suppliers, conduct rigorous on site testing for concrete and steel structures, and maintain full time site supervisors on every active project.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 6 -->
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" aria-controls="faq-ans-6">
+              <span>Can I track the progress of my project?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-content" id="faq-ans-6">
+              <div class="faq-body">
+                Yes. Every client is assigned a dedicated project manager who delivers weekly progress summaries, high resolution site imagery, and updated milestones. We also provide direct dashboard updates so you can monitor procurement, schedules, and inspections at your convenience.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 7 -->
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" aria-controls="faq-ans-7">
+              <span>What is the typical construction timeline?</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-content" id="faq-ans-7">
+              <div class="faq-body">
+                Timelines vary depending on project scale, architectural complexity, and municipal permitting processes. A luxury residential build typically spans twelve to eighteen months, while large commercial developments can take eighteen to thirty six months. We establish a realistic critical path schedule during preconstruction and commit to it.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 12: CONTACT AND FREE CONSULTATION
+         ========================================================================== -->
+    <section class="section section-deep" id="contact">
+      <div class="container">
+        <div class="contact-grid">
+          
+          <!-- Left Column: Contact Details -->
+          <div class="contact-info-col">
+            <div class="section-label">GET IN TOUCH</div>
+            <h2 class="section-title">LET'S BUILD SOMETHING EXTRAORDINARY.</h2>
+            <p>
+              Every remarkable project starts with a conversation. Tell us about your vision, and our team will help you take the first step.
+            </p>
+
+            <div class="contact-info-block">
+              
+              <div class="contact-detail-item">
+                <div class="contact-icon-box" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <div>
+                  <div class="contact-detail-label">Direct Telephone</div>
+                  <div class="contact-detail-val">
+                    <a href="tel:+18004567890" id="contact-phone-display">+1 (800) 456-7890</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="contact-detail-item">
+                <div class="contact-icon-box" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <div>
+                  <div class="contact-detail-label">Official Email</div>
+                  <div class="contact-detail-val">
+                    <a href="mailto:inquiries@nexoraconstructions.com" id="contact-email-display">inquiries@nexoraconstructions.com</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="contact-detail-item">
+                <div class="contact-icon-box" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                  <div class="contact-detail-label">Global Headquarters</div>
+                  <div class="contact-detail-val" id="contact-address-display">
+                    450 Lexicon Boulevard, Suite 800, New York, NY 10017
+                  </div>
+                </div>
+              </div>
+
+              <div class="contact-detail-item">
+                <div class="contact-icon-box" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div>
+                  <div class="contact-detail-label">Business Hours</div>
+                  <div class="contact-detail-val" id="contact-hours-display">
+                    Monday to Friday: 8:00 AM to 6:00 PM, Saturday: 9:00 AM to 2:00 PM
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right Column: Inquiry Form -->
+          <div class="contact-form-card">
+            <h3 style="font-size: 1.35rem; margin-bottom: 1.5rem; color: var(--color-white);">Project Inquiry Form</h3>
+            
+            <div class="form-success-banner" id="form-success-msg">
+              <strong>Thank you for contacting Nexora.</strong> Your consultation request has been submitted successfully. A senior project director will review your specifications and contact you within one business day.
+            </div>
+
+            <form id="consultation-form" novalidate>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="form-name" class="form-label">Full Name *</label>
+                  <input type="text" id="form-name" name="name" class="form-control" placeholder="E.g. Michael Thorne" required>
+                  <span class="field-error-msg" id="err-name">Please provide your full name.</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="form-email" class="form-label">Email Address *</label>
+                  <input type="email" id="form-email" name="email" class="form-control" placeholder="E.g. m.thorne@example.com" required>
+                  <span class="field-error-msg" id="err-email">Please enter a valid email address.</span>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="form-phone" class="form-label">Phone Number *</label>
+                  <input type="tel" id="form-phone" name="phone" class="form-control" placeholder="E.g. +1 (555) 019-2834" required>
+                  <span class="field-error-msg" id="err-phone">Please provide your phone number.</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="form-company" class="form-label">Company Name (Optional)</label>
+                  <input type="text" id="form-company" name="company" class="form-control" placeholder="E.g. Thorne Capital Group">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="form-type" class="form-label">Project Type *</label>
+                  <select id="form-type" name="projectType" class="form-control" required>
+                    <option value="">Select Project Type</option>
+                    <option value="Residential Construction">Residential Construction</option>
+                    <option value="Commercial Construction">Commercial Construction</option>
+                    <option value="Architectural Design">Architectural Design</option>
+                    <option value="Interior Design">Interior Design</option>
+                    <option value="Renovation and Remodeling">Renovation and Remodeling</option>
+                    <option value="Industrial Construction">Industrial Construction</option>
+                    <option value="Civil Engineering">Civil Engineering</option>
+                    <option value="Comprehensive Integrated Package">Comprehensive Integrated Package</option>
+                  </select>
+                  <span class="field-error-msg" id="err-type">Please select a project type.</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="form-location" class="form-label">Project Location *</label>
+                  <input type="text" id="form-location" name="location" class="form-control" placeholder="City, State or Country" required>
+                  <span class="field-error-msg" id="err-location">Please provide the project location.</span>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="form-budget" class="form-label">Estimated Budget *</label>
+                  <select id="form-budget" name="budget" class="form-control" required>
+                    <option value="">Select Estimated Budget</option>
+                    <option value="Under $500,000">Under $500,000</option>
+                    <option value="$500,000 to $1,000,000">$500,000 to $1,000,000</option>
+                    <option value="$1,000,000 to $3,000,000">$1,000,000 to $3,000,000</option>
+                    <option value="$3,000,000 to $10,000,000">$3,000,000 to $10,000,000</option>
+                    <option value="Above $10,000,000">Above $10,000,000</option>
+                  </select>
+                  <span class="field-error-msg" id="err-budget">Please choose an estimated budget.</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="form-timeline" class="form-label">Project Timeline *</label>
+                  <select id="form-timeline" name="timeline" class="form-control" required>
+                    <option value="">Select Timeline</option>
+                    <option value="Immediate (Within 1 Month)">Immediate (Within 1 Month)</option>
+                    <option value="1 to 3 Months">1 to 3 Months</option>
+                    <option value="3 to 6 Months">3 to 6 Months</option>
+                    <option value="6 to 12 Months">6 to 12 Months</option>
+                    <option value="Long Term Planning Stage">Long Term Planning Stage</option>
+                  </select>
+                  <span class="field-error-msg" id="err-timeline">Please select your desired timeline.</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="form-desc" class="form-label">Project Description *</label>
+                <textarea id="form-desc" name="description" rows="4" class="form-control" placeholder="Describe the scale, requirements, architectural style, and goals of your project." required></textarea>
+                <span class="field-error-msg" id="err-desc">Please share a brief project description.</span>
+              </div>
+
+              <div class="form-group">
+                <label for="form-file" class="form-label">File Attachment (Optional)</label>
+                <input type="file" id="form-file" name="attachment" class="form-control" accept=".pdf,.doc,.docx,.dwg,.jpg,.png" style="padding: 0.5rem 1rem;">
+                <span style="font-size: 0.75rem; color: var(--color-concrete-grey); margin-top: 0.35rem;">Attach site plans, architectural drawings, or scope briefs.</span>
+              </div>
+
+              <button type="submit" class="btn btn-copper" id="form-submit-btn" style="width: 100%; margin-top: 1rem;">
+                <span>REQUEST A FREE CONSULTATION</span>
+              </button>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 13: LOCATION
+         ========================================================================== -->
+    <section class="section section-dark" id="location">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">GLOBAL PRESENCE</div>
+          <h2 class="section-title">Visit Our Headquarters.</h2>
+          <p class="section-subtitle">
+            Our principal engineering and architectural studio is located in Midtown Manhattan, welcoming clients and partners for structured design reviews.
+          </p>
+        </div>
+
+        <div class="location-wrapper">
+          <!-- Google Maps Embed Frame -->
+          <div class="map-frame-box">
+            <!-- PASTE YOUR GOOGLE MAPS EMBED URL IN COMPANY_CONFIG.googleMapsEmbedUrl OR HERE -->
+            <iframe id="google-maps-iframe" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215573211516!2d-73.97491702347716!3d40.75283183483988!2m3!1f0!2f0!3f0!3m2!1i1024!2f768!4f13.1!3m3!1m2!1s0x89c25901a412797f%3A0xb0c2794c4ecdd6c6!2sGrand%20Central%20Terminal!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Nexora Constructions Headquarters Location Map"></iframe>
+          </div>
+
+          <div class="location-info-card">
+            <h3 style="font-size: 1.35rem; color: var(--color-white); margin-bottom: 1.25rem;">Corporate Headquarters</h3>
+            <p style="margin-bottom: 1.5rem; color: var(--color-grey-light);">
+              Conveniently positioned in the Midtown Manhattan business district with private consultation rooms, material specification galleries, and virtual reality project walk through suites.
+            </p>
+            <div style="margin-bottom: 1.5rem; line-height: 1.8;">
+              <div style="color: var(--color-white); font-weight: 700;">450 Lexicon Boulevard, Suite 800</div>
+              <div>New York, NY 10017, United States</div>
+              <div style="color: var(--color-copper); margin-top: 0.5rem;">Telephone: +1 (800) 456-7890</div>
+            </div>
+            <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-copper" style="min-height: 44px;">
+              <span>GET DIRECTIONS</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 14: FINAL CALL TO ACTION
+         ========================================================================== -->
+    <section class="cta-banner-section" id="cta">
+      <div class="cta-bg-container">
+        <img src="images/cta_banner.jpg" alt="Completed luxury architectural landmark project engineered by Nexora" class="cta-bg-image" loading="lazy" onerror="handleImgError(this)">
+        <div class="cta-overlay"></div>
+      </div>
+
+      <div class="container cta-content">
+        <div class="section-label" style="justify-content: center;">BEGIN YOUR JOURNEY</div>
+        <h2 class="cta-headline">YOUR VISION. OUR EXPERTISE. ONE EXTRAORDINARY RESULT.</h2>
+        <p class="cta-text">
+          Let's create spaces and structures that inspire, perform, and stand the test of time.
+        </p>
+
+        <div class="cta-actions">
+          <a href="#contact" class="btn btn-copper">START YOUR PROJECT</a>
+          <a href="#contact" class="btn btn-outline-white">CONTACT OUR TEAM</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       SECTION 15: FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      
+      <div class="footer-grid">
+        
+        <!-- Col 1: Brand Info -->
+        <div class="footer-col">
+          <div class="brand-logo" style="margin-bottom: 1.25rem;">
+            <div class="logo-mark" aria-hidden="true">
+              <svg viewBox="0 0 40 40" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" fill="#1F1F1F" rx="2" stroke="#B8734E" stroke-width="1.5"/>
+                <path d="M11 29V11L21 24V11" stroke="#B8734E" stroke-width="2.5" stroke-linecap="square"/>
+                <path d="M21 29L29 18V29" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"/>
+                <circle cx="21" cy="24" r="2" fill="#B8734E"/>
+              </svg>
+            </div>
+            <div class="brand-name">
+              <span class="brand-name-top">NEXORA</span>
+              <span class="brand-name-bottom">CONSTRUCTIONS</span>
+            </div>
+          </div>
+          <p class="footer-desc">
+            An international construction, engineering, and architectural company dedicated to creating iconic, sustainable, and high performance structures worldwide.
+          </p>
+          <div class="footer-social-row">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Nexora on Instagram">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Nexora on Facebook">
+              <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Nexora on LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Nexora on YouTube">
+              <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Quick Links -->
+        <div class="footer-col">
+          <div class="footer-col-title">Quick Links</div>
+          <ul class="footer-links-list">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Our Services -->
+        <div class="footer-col">
+          <div class="footer-col-title">Our Services</div>
+          <ul class="footer-links-list">
+            <li><a href="#services">Residential Construction</a></li>
+            <li><a href="#services">Commercial Construction</a></li>
+            <li><a href="#services">Architectural Design</a></li>
+            <li><a href="#services">Interior Design</a></li>
+            <li><a href="#services">Civil Engineering</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Newsletter -->
+        <div class="footer-col">
+          <div class="footer-col-title">Architectural Journal</div>
+          <p style="font-size: 0.875rem; margin-top: 1.25rem;">
+            Subscribe to our quarterly brief featuring landmark engineering breakthroughs and sustainable construction insights.
+          </p>
+          <form class="newsletter-form" id="newsletter-form" novalidate>
+            <div class="newsletter-input-wrap">
+              <input type="email" class="newsletter-input" id="newsletter-email" placeholder="Your email address" required aria-label="Email address for newsletter">
+              <button type="submit" class="newsletter-btn">Subscribe</button>
+            </div>
+            <div id="newsletter-msg" style="font-size: 0.75rem; color: var(--color-copper); display: none;"></div>
+          </form>
+          <div style="font-size: 0.8125rem; margin-top: 1.5rem; color: var(--color-concrete-grey);">
+            <div>Telephone: +1 (800) 456-7890</div>
+            <div>Email: inquiries@nexoraconstructions.com</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom-bar">
+        <div>Copyright 2026 NEXORA CONSTRUCTIONS. All Rights Reserved.</div>
+        <div style="color: var(--color-concrete-grey);">Excellence in Engineering and Architecture</div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       PROJECT DETAILS MODAL
+       ========================================================================== -->
+  <div class="modal-backdrop" id="project-modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="modal-close-btn" aria-label="Close project modal">&times;</button>
+      <div id="modal-project-content">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       GALLERY LIGHTBOX VIEWER
+       ========================================================================== -->
+  <div class="lightbox-viewer" id="lightbox-viewer" aria-hidden="true" role="dialog" aria-label="Image Lightbox Viewer">
+    <button class="modal-close-btn" id="lightbox-close-btn" aria-label="Close Lightbox">&times;</button>
+    <button class="lightbox-nav-btn lightbox-prev" id="lightbox-prev" aria-label="Previous Image">&#10094;</button>
+    
+    <div class="lightbox-img-wrap">
+      <img id="lightbox-target-img" src="" alt="Enlarged gallery project view">
+    </div>
+
+    <div class="lightbox-info">
+      <div class="lightbox-title" id="lightbox-title"></div>
+      <div class="lightbox-counter" id="lightbox-counter"></div>
+    </div>
+
+    <button class="lightbox-nav-btn lightbox-next" id="lightbox-next" aria-label="Next Image">&#10095;</button>
+  </div>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="back-to-top" aria-label="Scroll to top of page">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <!-- ==========================================================================
+       JAVASCRIPT LOGIC
+       ========================================================================== -->
+  <script>
+    /* ==========================================================================
+       NEXORA CONSTRUCTIONS: EDITABLE COMPANY CONFIGURATION DATA
+       Change company phone, email, address, hours, and statistics here.
+       ========================================================================== */
+    const COMPANY_CONFIG = {
+      name: "NEXORA CONSTRUCTIONS",
+      tagline: "BUILDING THE FUTURE. SHAPING THE WORLD.",
+      phone: "+1 (800) 456-7890",
+      email: "inquiries@nexoraconstructions.com",
+      officeAddress: "450 Lexicon Boulevard, Suite 800, New York, NY 10017",
+      businessHours: "Monday to Friday: 8:00 AM to 6:00 PM, Saturday: 9:00 AM to 2:00 PM",
+      stats: {
+        completedProjects: 250,
+        yearsExperience: 15,
+        satisfiedClients: 120,
+        professionalExperts: 35,
+        satisfactionRate: 98
+      },
+      social: {
+        instagram: "https://instagram.com/nexoraconstructions",
+        facebook: "https://facebook.com/nexoraconstructions",
+        linkedin: "https://linkedin.com/company/nexoraconstructions",
+        youtube: "https://youtube.com/@nexoraconstructions"
+      },
+      // Live Supabase Database Connection
+      supabaseUrl: "https://cmzbjzjabthhibndepnf.supabase.co",
+      supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtemJqemphYnRoaGlibmRlcG5mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUwNTk1MTQsImV4cCI6MjExMDYzNTUxNH0.bbWMgOIs9uMIK_unpN3rL_TT1dY3qL5FlsRUe6N6oWY",
+      // Paste your own Google Maps Embed Link here:
+      googleMapsEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215573211516!2d-73.97491702347716!3d40.75283183483988!2m3!1f0!2f0!3f0!3m2!1i1024!2f768!4f13.1!3m3!1m2!1s0x89c25901a412797f%3A0xb0c2794c4ecdd6c6!2sGrand%20Central%20Terminal!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+    };
+
+    /* Project Data for Modal Views */
+    const PROJECTS_DATABASE = {
+      residence: {
+        title: "The Modern Residence",
+        category: "Residential Architecture",
+        location: "Beverly Hills, California",
+        year: "2025",
+        area: "14,500 Square Feet",
+        client: "Private Client",
+        description: "A cantilevered architectural masterpiece engineered into a steep hillside. The structure incorporates post tensioned concrete floor plates, custom acoustic glazing, and an expansive infinity edge terrace offering uninterrupted sunset vistas.",
+        features: [
+          "Post tensioned concrete cantilevered floor plates",
+          "Automated low iron structural glass sliding panels",
+          "Integrated geothermal heating and cooling system",
+          "Smart building management with architectural lighting scenes"
+        ]
+      },
+      tower: {
+        title: "Corporate Business Tower",
+        category: "Commercial High-Rise",
+        location: "Downtown Financial District, Chicago",
+        year: "2024",
+        area: "850,000 Square Feet",
+        client: "Vanguard Global Asset Partners",
+        description: "A landmark forty two story commercial headquarters combining composite steel frames, tuned mass liquid dampers for wind dissipation, and a triple glazed solar active curtain wall that minimizes thermal gain.",
+        features: [
+          "Tuned liquid column damper for seismic and wind resilience",
+          "High performance unitized triple glazed facade",
+          "Column free floor spans optimizing flexible office layouts",
+          "LEED Platinum certified sustainable infrastructure"
+        ]
+      },
+      industrial: {
+        title: "Industrial Development",
+        category: "Industrial Engineering",
+        location: "Logistics Hub, Dallas",
+        year: "2025",
+        area: "1,200,000 Square Feet",
+        client: "Apex Intermodal Freight",
+        description: "A high volume automated logistics and distribution headquarters engineered with heavy duty post tensioned industrial slabs, clear 40-foot interior heights, and robotic conveyance grid foundations.",
+        features: [
+          "Heavy duty laser screed post tensioned concrete slab",
+          "Clear 40-foot warehouse ceiling height clearances",
+          "Integrated 2.5 MW rooftop photovoltaic array",
+          "Rapid cross dock logistics infrastructure"
+        ]
+      },
+      interior: {
+        title: "Luxury Interior Concept",
+        category: "Interior Architecture",
+        location: "Manhattan Penthouse, New York",
+        year: "2024",
+        area: "7,800 Square Feet",
+        client: "Private Client",
+        description: "A comprehensive interior transformation of a multi level penthouse. Custom architectural bronze trim, fluted Calacatta marble fireplace walls, and precision engineered walnut acoustic ceiling louvers.",
+        features: [
+          "Hand finished architectural bronze reveals and fixtures",
+          "Fluted bookmatched Calacatta marble wall features",
+          "Concealed linear micro diffuser climate architecture",
+          "Bespoke helical staircase with hidden steel cantilever stringers"
+        ]
+      },
+      living_complex: {
+        title: "Urban Living Complex",
+        category: "Multi-Family Residential",
+        location: "Waterfront District, Vancouver",
+        year: "2025",
+        area: "340,000 Square Feet",
+        client: "Pacific Urban Developments",
+        description: "A residential complex designed with stepped terraced mass timber and structural concrete elements. Every residence enjoys private panoramic views and cross ventilation, surrounding a central biophilic courtyard.",
+        features: [
+          "Hybrid cross laminated timber and reinforced concrete structure",
+          "Stepped landscaped garden terraces with automated rainwater harvesting",
+          "High performance building envelope with triple pane glazing",
+          "Communal rooftop conservatory and wellness facilities"
+        ]
+      },
+      office: {
+        title: "Modern Office Headquarters",
+        category: "Commercial Campus",
+        location: "Innovation Corridor, Austin",
+        year: "2024",
+        area: "280,000 Square Feet",
+        client: "Veritas Dynamics",
+        description: "A state of the art campus engineered to promote collaborative productivity. Designed with a central glazed atrium, mass timber interior bridges, and dedicated outdoor meeting pavilions.",
+        features: [
+          "Expansive four story atrium skylight with solar shading fins",
+          "Exposed mass timber bridges and collaborative stair pods",
+          "Net zero operational energy footprint utilizing on site solar",
+          "Greywater recycling and advanced air purification system"
+        ]
+      }
+    };
+
+    /* Missing Image Refined Fallback Handler */
+    function handleImgError(img) {
+      img.style.display = 'none';
+      const box = img.closest('.image-box') || img.closest('.gallery-item') || img.closest('.testimonial-avatar-box') || img.parentElement;
+      if (box) {
+        box.classList.add('has-fallback');
+        if (!box.querySelector('.img-fallback')) {
+          const src = img.getAttribute('src') || '';
+          const fallback = document.createElement('div');
+          fallback.className = 'img-fallback';
+          fallback.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="fallback-label">${src}</span>
+          `;
+          box.appendChild(fallback);
+        }
+      }
+    }
+
+    /* Initialize on DOM Ready */
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      /* Synchronize Editable Config into DOM */
+      syncCompanyData();
+
+      /* Sticky Header and Active Navigation Highlight */
+      initNavigation();
+
+      /* Project Filtering */
+      initProjectFilters();
+
+      /* Project Details Modal */
+      initProjectModal();
+
+      /* Gallery Lightbox */
+      initGalleryLightbox();
+
+      /* Testimonials Slider */
+      initTestimonialsSlider();
+
+      /* Achievements Counter Animation */
+      initAchievementsCounter();
+
+      /* Process Timeline Animation */
+      initProcessTimeline();
+
+      /* FAQ Accordion */
+      initFAQAccordion();
+
+      /* Consultation Form Validation */
+      initConsultationForm();
+
+      /* Newsletter Form */
+      initNewsletter();
+
+      /* Back to Top */
+      initBackToTop();
+    });
+
+    /* Synchronize Config Object Data */
+    function syncCompanyData() {
+      const phoneEl = document.getElementById('contact-phone-display');
+      const emailEl = document.getElementById('contact-email-display');
+      const addrEl = document.getElementById('contact-address-display');
+      const hoursEl = document.getElementById('contact-hours-display');
+      
+      if (phoneEl) {
+        phoneEl.textContent = COMPANY_CONFIG.phone;
+        phoneEl.href = 'tel:' + COMPANY_CONFIG.phone.replace(/[^0-9+]/g, '');
+      }
+      if (emailEl) {
+        emailEl.textContent = COMPANY_CONFIG.email;
+        emailEl.href = 'mailto:' + COMPANY_CONFIG.email;
+      }
+      if (addrEl) addrEl.textContent = COMPANY_CONFIG.officeAddress;
+      if (hoursEl) hoursEl.textContent = COMPANY_CONFIG.businessHours;
+
+      // Map Iframe URL
+      const mapIframe = document.getElementById('google-maps-iframe');
+      if (mapIframe && COMPANY_CONFIG.googleMapsEmbedUrl) {
+        mapIframe.src = COMPANY_CONFIG.googleMapsEmbedUrl;
+      }
+    }
+
+    /* Sticky Navigation and ScrollSpy */
+    function initNavigation() {
+      const header = document.getElementById('site-header');
+      const hamburger = document.getElementById('hamburger-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const mobileLinks = document.querySelectorAll('.mobile-nav-item');
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 40) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+        highlightActiveSection();
+      }, { passive: true });
+
+      // Hamburger Menu Toggle
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener('click', () => {
+          const isOpen = hamburger.classList.toggle('active');
+          mobileMenu.classList.toggle('open');
+          hamburger.setAttribute('aria-expanded', isOpen);
+          mobileMenu.setAttribute('aria-hidden', !isOpen);
+          document.body.style.overflow = isOpen ? 'hidden' : '';
+        });
+
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', 'false');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+          });
+        });
+      }
+
+      // ScrollSpy
+      const sections = document.querySelectorAll('section[id]');
+      function highlightActiveSection() {
+        const scrollPosition = window.scrollY + 140;
+        sections.forEach(sec => {
+          const top = sec.offsetTop;
+          const height = sec.offsetHeight;
+          const id = sec.getAttribute('id');
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === '#' + id) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      }
+    }
+
+    /* Project Filtering */
+    function initProjectFilters() {
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const projectCards = document.querySelectorAll('.project-card');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const filter = btn.getAttribute('data-filter');
+          projectCards.forEach(card => {
+            const cat = card.getAttribute('data-category');
+            if (filter === 'all' || cat === filter) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+        });
+      });
+    }
+
+    /* Project Details Modal */
+    function initProjectModal() {
+      const modal = document.getElementById('project-modal');
+      const closeBtn = document.getElementById('modal-close-btn');
+      const content = document.getElementById('modal-project-content');
+      const detailBtns = document.querySelectorAll('.project-btn-details');
+
+      detailBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-project');
+          const data = PROJECTS_DATABASE[key];
+          if (!data) return;
+
+          content.innerHTML = `
+            <div style="font-family: var(--font-heading); font-size: 0.75rem; color: var(--color-copper); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;">${data.category}</div>
+            <h2 style="font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.75rem; color: var(--color-white);">${data.title}</h2>
+            <div style="font-size: 0.9375rem; color: var(--color-concrete-grey); margin-bottom: 1.5rem;">
+              <span>Location: ${data.location}</span> | <span>Year: ${data.year}</span> | <span>Scale: ${data.area}</span>
+            </div>
+            <p style="font-size: 1rem; line-height: 1.7; margin-bottom: 1.75rem; color: var(--color-grey-light);">${data.description}</p>
+            <div style="border-top: 1px solid rgba(184, 115, 78, 0.3); padding-top: 1.25rem;">
+              <h4 style="font-size: 0.875rem; color: var(--color-copper); margin-bottom: 0.85rem; letter-spacing: 0.1em;">KEY STRUCTURAL SPECIFICATIONS</h4>
+              <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem;">
+                ${data.features.map(f => `
+                  <li style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.9375rem; color: var(--color-concrete-grey);">
+                    <span style="color: var(--color-copper);">&#9670;</span>
+                    <span>${f}</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+            <div style="margin-top: 2rem;">
+              <a href="#contact" class="btn btn-copper modal-inquire-btn" style="min-height: 44px;">INQUIRE ABOUT SIMILAR SCOPE</a>
+            </div>
+          `;
+
+          // Hook modal inquire button to close modal and scroll
+          const inqBtn = content.querySelector('.modal-inquire-btn');
+          if (inqBtn) {
+            inqBtn.addEventListener('click', () => closeModal());
+          }
+
+          modal.classList.add('active');
+          modal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      function closeModal() {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+          closeModal();
+        }
+      });
+    }
+
+    /* Gallery Lightbox */
+    function initGalleryLightbox() {
+      const viewer = document.getElementById('lightbox-viewer');
+      const closeBtn = document.getElementById('lightbox-close-btn');
+      const prevBtn = document.getElementById('lightbox-prev');
+      const nextBtn = document.getElementById('lightbox-next');
+      const targetImg = document.getElementById('lightbox-target-img');
+      const titleEl = document.getElementById('lightbox-title');
+      const counterEl = document.getElementById('lightbox-counter');
+      const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
+
+      let currentIndex = 0;
+
+      galleryItems.forEach(item => {
+        item.addEventListener('click', () => {
+          currentIndex = parseInt(item.getAttribute('data-gallery-index'), 10);
+          openLightbox();
+        });
+      });
+
+      function openLightbox() {
+        const item = galleryItems[currentIndex];
+        const img = item.querySelector('img');
+        const title = item.getAttribute('data-title');
+        const cat = item.getAttribute('data-category');
+
+        targetImg.src = img.getAttribute('src');
+        targetImg.alt = img.getAttribute('alt');
+        titleEl.textContent = title + ' (' + cat + ')';
+        counterEl.textContent = String(currentIndex + 1).padStart(2, '0') + ' of ' + String(galleryItems.length).padStart(2, '0');
+
+        viewer.classList.add('active');
+        viewer.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        viewer.classList.remove('active');
+        viewer.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+        openLightbox();
+      }
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % galleryItems.length;
+        openLightbox();
+      }
+
+      if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+      if (prevBtn) prevBtn.addEventListener('click', showPrev);
+      if (nextBtn) nextBtn.addEventListener('click', showNext);
+
+      viewer.addEventListener('click', (e) => {
+        if (e.target === viewer) closeLightbox();
+      });
+
+      // Keyboard Controls
+      document.addEventListener('keydown', (e) => {
+        if (!viewer.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') showPrev();
+        if (e.key === 'ArrowRight') showNext();
+      });
+
+      // Touch Swipe for Lightbox
+      let startX = 0;
+      viewer.addEventListener('touchstart', (e) => {
+        startX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      viewer.addEventListener('touchend', (e) => {
+        const diffX = e.changedTouches[0].screenX - startX;
+        if (diffX > 50) showPrev();
+        if (diffX < -50) showNext();
+      }, { passive: true });
+    }
+
+    /* Testimonials Slider */
+    function initTestimonialsSlider() {
+      const track = document.getElementById('testimonial-track');
+      const slides = document.querySelectorAll('.testimonial-slide');
+      const prevBtn = document.getElementById('slider-prev');
+      const nextBtn = document.getElementById('slider-next');
+      const dots = document.querySelectorAll('.slider-dot');
+      const sliderWrap = document.getElementById('testimonials-slider');
+
+      let current = 0;
+      let autoplayTimer = null;
+
+      function goToSlide(index) {
+        current = (index + slides.length) % slides.length;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === current);
+        });
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', () => { goToSlide(current - 1); resetAutoplay(); });
+      if (nextBtn) nextBtn.addEventListener('click', () => { goToSlide(current + 1); resetAutoplay(); });
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          const idx = parseInt(dot.getAttribute('data-slide'), 10);
+          goToSlide(idx);
+          resetAutoplay();
+        });
+      });
+
+      // Autoplay
+      function startAutoplay() {
+        autoplayTimer = setInterval(() => {
+          goToSlide(current + 1);
+        }, 5500);
+      }
+
+      function stopAutoplay() {
+        if (autoplayTimer) clearInterval(autoplayTimer);
+      }
+
+      function resetAutoplay() {
+        stopAutoplay();
+        startAutoplay();
+      }
+
+      if (sliderWrap) {
+        sliderWrap.addEventListener('mouseenter', stopAutoplay);
+        sliderWrap.addEventListener('mouseleave', startAutoplay);
+      }
+
+      startAutoplay();
+
+      // Touch Swipe for Testimonials
+      let touchStartX = 0;
+      track.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      track.addEventListener('touchend', (e) => {
+        const diff = e.changedTouches[0].screenX - touchStartX;
+        if (diff > 40) {
+          goToSlide(current - 1);
+          resetAutoplay();
+        } else if (diff < -40) {
+          goToSlide(current + 1);
+          resetAutoplay();
+        }
+      }, { passive: true });
+    }
+
+    /* Achievements Counter Animation */
+    function initAchievementsCounter() {
+      const section = document.getElementById('achievements');
+      const counters = [
+        { el: document.getElementById('stat-completed'), target: COMPANY_CONFIG.stats.completedProjects, suffix: '+' },
+        { el: document.getElementById('stat-clients'), target: COMPANY_CONFIG.stats.satisfiedClients, suffix: '+' },
+        { el: document.getElementById('stat-years'), target: COMPANY_CONFIG.stats.yearsExperience, suffix: '+' },
+        { el: document.getElementById('stat-experts'), target: COMPANY_CONFIG.stats.professionalExperts, suffix: '+' },
+        { el: document.getElementById('stat-satisfaction'), target: COMPANY_CONFIG.stats.satisfactionRate, suffix: '%' }
+      ];
+
+      let animated = false;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !animated) {
+            animated = true;
+            counters.forEach(item => {
+              if (item.el) runCounter(item.el, item.target, item.suffix);
+            });
+            observer.unobserve(section);
+          }
+        });
+      }, { threshold: 0.25 });
+
+      if (section) observer.observe(section);
+
+      function runCounter(elem, targetVal, suffix) {
+        let start = 0;
+        const duration = 1800;
+        const startTime = performance.now();
+
+        function step(now) {
+          const progress = Math.min((now - startTime) / duration, 1);
+          // Ease Out Quad
+          const current = Math.floor((1 - (1 - progress) * (1 - progress)) * targetVal);
+          elem.textContent = current + suffix;
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          } else {
+            elem.textContent = targetVal + suffix;
+          }
+        }
+        requestAnimationFrame(step);
+      }
+    }
+
+    /* Process Timeline Progress Animation */
+    function initProcessTimeline() {
+      const section = document.getElementById('process');
+      const progressLine = document.getElementById('timeline-progress');
+
+      if (!section || !progressLine) return;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            progressLine.style.width = '100%';
+            progressLine.style.height = '100%';
+          }
+        });
+      }, { threshold: 0.3 });
+
+      observer.observe(section);
+    }
+
+    /* FAQ Accordion */
+    function initFAQAccordion() {
+      const triggers = document.querySelectorAll('.faq-trigger');
+
+      triggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          const expanded = trigger.getAttribute('aria-expanded') === 'true';
+          const content = trigger.nextElementSibling;
+
+          // Close all other items
+          triggers.forEach(other => {
+            if (other !== trigger) {
+              other.setAttribute('aria-expanded', 'false');
+              other.nextElementSibling.style.maxHeight = null;
+            }
+          });
+
+          // Toggle current
+          if (expanded) {
+            trigger.setAttribute('aria-expanded', 'false');
+            content.style.maxHeight = null;
+          } else {
+            trigger.setAttribute('aria-expanded', 'true');
+            content.style.maxHeight = content.scrollHeight + 'px';
+          }
+        });
+      });
+    }
+
+    /* Consultation Form Validation */
+    function initConsultationForm() {
+      const form = document.getElementById('consultation-form');
+      const submitBtn = document.getElementById('form-submit-btn');
+      const successMsg = document.getElementById('form-success-msg');
+
+      if (!form) return;
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Fields to validate
+        const nameInput = document.getElementById('form-name');
+        const emailInput = document.getElementById('form-email');
+        const phoneInput = document.getElementById('form-phone');
+        const typeSelect = document.getElementById('form-type');
+        const locInput = document.getElementById('form-location');
+        const budgetSelect = document.getElementById('form-budget');
+        const timelineSelect = document.getElementById('form-timeline');
+        const descTextarea = document.getElementById('form-desc');
+
+        let isValid = true;
+
+        // Validation Rules
+        function validateField(input, errorId, condition) {
+          const errorEl = document.getElementById(errorId);
+          if (!condition) {
+            input.classList.add('error');
+            if (errorEl) errorEl.classList.add('visible');
+            isValid = false;
+          } else {
+            input.classList.remove('error');
+            if (errorEl) errorEl.classList.remove('visible');
+          }
+        }
+
+        validateField(nameInput, 'err-name', nameInput.value.trim().length >= 2);
+        
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        validateField(emailInput, 'err-email', emailPattern.test(emailInput.value.trim()));
+
+        validateField(phoneInput, 'err-phone', phoneInput.value.trim().length >= 7);
+        validateField(typeSelect, 'err-type', typeSelect.value !== '');
+        validateField(locInput, 'err-location', locInput.value.trim().length >= 2);
+        validateField(budgetSelect, 'err-budget', budgetSelect.value !== '');
+        validateField(timelineSelect, 'err-timeline', timelineSelect.value !== '');
+        validateField(descTextarea, 'err-desc', descTextarea.value.trim().length >= 10);
+
+        if (isValid) {
+          // Loading state
+          const originalText = submitBtn.innerHTML;
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = `<span>TRANSMITTING INQUIRY...</span>`;
+
+          const payload = {
+            full_name: nameInput.value.trim(),
+            email: emailInput.value.trim(),
+            phone: phoneInput.value.trim(),
+            company: (document.getElementById('form-company') ? document.getElementById('form-company').value.trim() : null) || null,
+            project_type: typeSelect.value,
+            location: locInput.value.trim(),
+            budget: budgetSelect.value,
+            timeline: timelineSelect.value,
+            description: descTextarea.value.trim()
+          };
+
+          (async () => {
+            try {
+              if (window.supabase) {
+                const sb = window.supabase.createClient(COMPANY_CONFIG.supabaseUrl, COMPANY_CONFIG.supabaseAnonKey);
+                const { error } = await sb.from('consultations').insert([payload]);
+                if (error) console.warn('Supabase inquiry note:', error.message);
+              }
+            } catch (err) {
+              console.warn('Network note:', err);
+            } finally {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = originalText;
+              successMsg.classList.add('visible');
+              form.reset();
+              successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              setTimeout(() => { successMsg.classList.remove('visible'); }, 10000);
+            }
+          })();
+        }
+      });
+    }
+
+    /* Newsletter Form */
+    function initNewsletter() {
+      const form = document.getElementById('newsletter-form');
+      const input = document.getElementById('newsletter-email');
+      const msg = document.getElementById('newsletter-msg');
+
+      if (!form) return;
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = input.value.trim();
+        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (pattern.test(email)) {
+          if (window.supabase) {
+            const sb = window.supabase.createClient(COMPANY_CONFIG.supabaseUrl, COMPANY_CONFIG.supabaseAnonKey);
+            sb.from('subscribers').insert([{ email: email }]).then(() => {});
+          }
+          msg.textContent = "Thank you for subscribing to Nexora architectural updates.";
+          msg.style.display = "block";
+          input.value = "";
+          setTimeout(() => { msg.style.display = "none"; }, 6000);
+        } else {
+          msg.textContent = "Please provide a valid email address.";
+          msg.style.display = "block";
+        }
+      });
+    }
+
+    /* Back to Top Button */
+    function initBackToTop() {
+      const btn = document.getElementById('back-to-top');
+      if (!btn) return;
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) {
+          btn.classList.add('visible');
+        } else {
+          btn.classList.remove('visible');
+        }
+      }, { passive: true });
+
+      btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  </script>
+
+  <!-- ==========================================================================
+       IMAGE SPECIFICATIONS AND ASSET GUIDE
+       
+       Place your photograph files inside a folder named 'images' directly 
+       next to this index.html file.
+       Every picture uses object-fit: cover inside a fixed container so nothing stretches.
+       
+       Hero and Main Sections:
+       1.  images/hero.jpg: Wide landscape (2560 x 1440 or 1920 x 1080), dramatic modern building
+       2.  images/about.jpg: Construction site or engineers reviewing a project (1200 x 900, 4:3)
+       3.  images/cta_banner.jpg: Finished luxury architectural project, wide landscape (2560 x 1080)
+       4.  images/stats_bg.jpg: Architectural structural detail for achievements background (1920 x 1080)
+       
+       Service Cards (Aspect Ratio: 16:10 or 1200 x 750):
+       5.  images/service_residential.jpg: Private luxury home or villa
+       6.  images/service_commercial.jpg: Corporate tower or modern office facade
+       7.  images/service_architectural.jpg: Architectural blueprints, drawings or physical scale model
+       8.  images/service_interior.jpg: Luxury interior space, architectural millwork
+       9.  images/service_renovation.jpg: Modern structural remodel or historic restoration
+       10. images/service_industrial.jpg: Large logistics hub, structural steel framing
+       11. images/service_civil.jpg: Infrastructure, foundation works, grading or concrete site
+       12. images/service_management.jpg: Project superintendent coordinating construction schedule
+       
+       Project Cards (Aspect Ratio: 16:10 to 4:3, high resolution landscape):
+       13. images/project_residence.jpg: The Modern Residence (Beverly Hills)
+       14. images/project_tower.jpg: Corporate Business Tower (Chicago)
+       15. images/project_industrial.jpg: Industrial Development (Dallas)
+       16. images/project_interior.jpg: Luxury Interior Concept (Manhattan)
+       17. images/project_living_complex.jpg: Urban Living Complex (Vancouver)
+       18. images/project_office.jpg: Modern Office Headquarters (Austin)
+       
+       Team Portraits (Aspect Ratio: 4:5, 800 x 1000):
+       19. images/team_director.jpg: Managing Director portrait
+       20. images/team_architect.jpg: Chief Architect portrait
+       21. images/team_engineer.jpg: Civil Engineer portrait
+       22. images/team_manager.jpg: Project Manager portrait
+       23. images/team_supervisor.jpg: Site Supervisor portrait
+       
+       Client Testimonial Portraits (Aspect Ratio: 1:1, square 400 x 400):
+       24. images/client_1.jpg: Client 1 portrait
+       25. images/client_2.jpg: Client 2 portrait
+       26. images/client_3.jpg: Client 3 portrait
+       
+       Gallery Pictures (Mix of landscape 1200 x 800 and portrait 800 x 1200):
+       27. images/gallery_01.jpg: Exteriors, Curvilinear Facade Glazing (Wide)
+       28. images/gallery_02.jpg: Construction Progress, Structural Concrete Pour (Tall)
+       29. images/gallery_03.jpg: Structural Engineering, Steel Truss Framing
+       30. images/gallery_04.jpg: Interior Finishing, Fluted Marble Cladding
+       31. images/gallery_05.jpg: Architectural Details, Copper Louvers
+       32. images/gallery_06.jpg: Residential Spaces, Infinity Edge Hillside Residence (Wide)
+       33. images/gallery_07.jpg: Commercial Projects, Atrium Skylight Assembly
+       34. images/gallery_08.jpg: Structural Engineering, Deep Caisson Foundation Works (Tall)
+       35. images/gallery_09.jpg: Architectural Details, Cantilevered Staircase Sculpture
+       36. images/gallery_10.jpg: Interior Finishing, Acoustic Ceiling Architecture
+       37. images/gallery_11.jpg: Commercial Projects, High Bay Logistics Distribution Hall (Wide)
+       38. images/gallery_12.jpg: Residential Spaces, Refined Penthouse Living Room
+       ========================================================================== -->
+</body>
+</html>

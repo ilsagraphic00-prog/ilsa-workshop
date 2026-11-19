@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff and Client Portal | NEXORA CONSTRUCTIONS</title>
+  <meta name="description" content="Protected administrative and executive management portal for Nexora Constructions.">
+  <meta name="theme-color" content="#B8734E">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Supabase JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --color-charcoal: #292929;
+      --color-deep-charcoal: #1F1F1F;
+      --color-copper: #B8734E;
+      --color-light-copper: #D29A78;
+      --color-warm-ivory: #F5F2EB;
+      --color-concrete-grey: #A6A7A5;
+      --color-white: #FFFFFF;
+      --font-heading: 'Montserrat', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --transition-fast: all 0.2s ease;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--color-deep-charcoal);
+      color: var(--color-white);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: var(--color-copper);
+      text-decoration: none;
+      transition: var(--transition-fast);
+    }
+    a:hover {
+      color: var(--color-light-copper);
+    }
+
+    /* Header */
+    .portal-header {
+      background-color: var(--color-charcoal);
+      border-bottom: 1px solid rgba(184, 115, 78, 0.3);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .brand-title {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--color-white);
+    }
+    .brand-sub {
+      font-family: var(--font-heading);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--color-copper);
+      letter-spacing: 0.25em;
+    }
+
+    .portal-user-bar {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      font-size: 0.875rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.4rem;
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .btn-copper {
+      background-color: var(--color-copper);
+      color: var(--color-white);
+      border-color: var(--color-copper);
+    }
+    .btn-copper:hover {
+      background-color: var(--color-light-copper);
+      color: var(--color-deep-charcoal);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--color-concrete-grey);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .btn-outline:hover {
+      border-color: var(--color-copper);
+      color: var(--color-white);
+    }
+
+    /* Main Container */
+    .portal-main {
+      flex: 1;
+      padding: 2.5rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Auth Screen */
+    .auth-card-wrap {
+      max-width: 440px;
+      margin: 4rem auto;
+      background-color: var(--color-charcoal);
+      border: 1px solid rgba(184, 115, 78, 0.4);
+      padding: 2.5rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    .auth-title {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--color-white);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .auth-subtitle {
+      font-size: 0.875rem;
+      color: var(--color-concrete-grey);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-label {
+      display: block;
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--color-concrete-grey);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .form-input {
+      width: 100%;
+      background-color: var(--color-deep-charcoal);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--color-white);
+      padding: 0.75rem 1rem;
+      font-size: 0.9375rem;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--color-copper);
+    }
+
+    .auth-alert {
+      padding: 0.75rem 1rem;
+      font-size: 0.8125rem;
+      margin-bottom: 1.25rem;
+      display: none;
+      border: 1px solid;
+    }
+    .auth-alert.error {
+      display: block;
+      background-color: rgba(217, 83, 79, 0.15);
+      border-color: #d9534f;
+      color: #ff8b88;
+    }
+    .auth-alert.success {
+      display: block;
+      background-color: rgba(184, 115, 78, 0.2);
+      border-color: var(--color-copper);
+      color: var(--color-warm-ivory);
+    }
+
+    /* Dashboard */
+    .dashboard-view {
+      display: none;
+    }
+    .dashboard-view.active {
+      display: block;
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .metric-card {
+      background-color: var(--color-charcoal);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1.5rem;
+      border-left: 3px solid var(--color-copper);
+    }
+    .metric-num {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--color-white);
+      line-height: 1.1;
+      margin-bottom: 0.25rem;
+    }
+    .metric-label {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--color-concrete-grey);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Tabs */
+    .tab-bar {
+      display: flex;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 1.5rem;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      font-family: var(--font-heading);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-concrete-grey);
+      cursor: pointer;
+      position: relative;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .tab-btn.active {
+      color: var(--color-copper);
+    }
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--color-copper);
+    }
+
+    /* Tables */
+    .table-container {
+      background-color: var(--color-charcoal);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.875rem;
+    }
+    th {
+      background-color: rgba(31, 31, 31, 0.7);
+      padding: 1rem 1.25rem;
+      font-family: var(--font-heading);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-concrete-grey);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    td {
+      padding: 1.1rem 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--color-white);
+      vertical-align: top;
+    }
+    tr:hover td {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-radius: 2px;
+    }
+    .status-pending {
+      background-color: rgba(184, 115, 78, 0.2);
+      border: 1px solid var(--color-copper);
+      color: var(--color-light-copper);
+    }
+    .status-contacted {
+      background-color: rgba(76, 175, 80, 0.2);
+      border: 1px solid #4caf50;
+      color: #81c784;
+    }
+    .status-reviewing {
+      background-color: rgba(255, 193, 7, 0.2);
+      border: 1px solid #ffc107;
+      color: #ffe082;
+    }
+
+    .empty-state {
+      padding: 3rem;
+      text-align: center;
+      color: var(--color-concrete-grey);
+    }
+
+    @media (max-width: 900px) {
+      .metrics-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Portal Header -->
+  <header class="portal-header">
+    <div class="brand-group">
+      <svg viewBox="0 0 40 40" width="34" height="34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="40" height="40" fill="#1F1F1F" rx="2" stroke="#B8734E" stroke-width="1.5"/>
+        <path d="M11 29V11L21 24V11" stroke="#B8734E" stroke-width="2.5" stroke-linecap="square"/>
+        <path d="M21 29L29 18V29" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"/>
+      </svg>
+      <div>
+        <div class="brand-title">NEXORA CONSTRUCTIONS</div>
+        <div class="brand-sub">STAFF AND CLIENT PORTAL</div>
+      </div>
+    </div>
+
+    <div class="portal-user-bar">
+      <a href="index.html" class="btn btn-outline">&larr; Return to Website</a>
+      <div id="user-info" style="display: none;">
+        <span id="user-email-display" style="color: var(--color-concrete-grey);"></span>
+        <button id="logout-btn" class="btn btn-copper" style="margin-left: 0.75rem;">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="portal-main">
+    
+    <!-- Auth View (Shown when logged out) -->
+    <div class="auth-card-wrap" id="auth-view">
+      <div class="auth-title">Portal Authentication</div>
+      <div class="auth-subtitle">Sign in to access inquiries, client records, and analytics.</div>
+
+      <div class="auth-alert" id="auth-alert"></div>
+
+      <form id="auth-form">
+        <div class="form-group">
+          <label for="auth-email" class="form-label">Email Address</label>
+          <input type="email" id="auth-email" class="form-input" placeholder="staff@nexora.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="auth-password" class="form-label">Password</label>
+          <input type="password" id="auth-password" class="form-input" placeholder="••••••••••••" required>
+        </div>
+
+        <button type="submit" class="btn btn-copper" id="auth-submit-btn" style="width: 100%; margin-top: 0.5rem;">
+          <span>SIGN IN</span>
+        </button>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 1.25rem; font-size: 0.75rem;">
+          <button type="button" id="toggle-signup-btn" style="background: none; border: none; color: var(--color-copper); cursor: pointer; text-decoration: underline;">
+            Create New Staff Account
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Protected Dashboard (Shown when logged in) -->
+    <div class="dashboard-view" id="dashboard-view">
+      
+      <!-- KPI Row -->
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-num" id="metric-total-inquiries">0</div>
+          <div class="metric-label">Total Inquiries</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num" id="metric-pending-inquiries">0</div>
+          <div class="metric-label">Pending Review</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num" id="metric-contacted-inquiries">0</div>
+          <div class="metric-label">Contacted</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num" id="metric-total-subscribers">0</div>
+          <div class="metric-label">Journal Subscribers</div>
+        </div>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="inquiries">Consultation Inquiries</button>
+        <button class="tab-btn" data-tab="subscribers">Newsletter Subscribers</button>
+      </div>
+
+      <!-- Consultations Tab -->
+      <div class="tab-content" id="tab-inquiries">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Client Name</th>
+                <th>Contact</th>
+                <th>Project Type</th>
+                <th>Budget / Location</th>
+                <th>Description</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="inquiries-table-body">
+              <tr>
+                <td colspan="7" class="empty-state">Loading consultation inquiries...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Subscribers Tab -->
+      <div class="tab-content" id="tab-subscribers" style="display: none;">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Subscribed Date</th>
+                <th>Subscriber Email</th>
+                <th>ID</th>
+              </tr>
+            </thead>
+            <tbody id="subscribers-table-body">
+              <tr>
+                <td colspan="3" class="empty-state">Loading subscribers...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    // Supabase Configuration
+    const SUPABASE_URL = "https://cmzbjzjabthhibndepnf.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtemJqemphYnRoaGlibmRlcG5mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUwNTk1MTQsImV4cCI6MjExMDYzNTUxNH0.bbWMgOIs9uMIK_unpN3rL_TT1dY3qL5FlsRUe6N6oWY";
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let isSignUpMode = false;
+
+    // Elements
+    const authView = document.getElementById('auth-view');
+    const dashboardView = document.getElementById('dashboard-view');
+    const authForm = document.getElementById('auth-form');
+    const authEmail = document.getElementById('auth-email');
+    const authPassword = document.getElementById('auth-password');
+    const authSubmitBtn = document.getElementById('auth-submit-btn');
+    const toggleSignupBtn = document.getElementById('toggle-signup-btn');
+    const authAlert = document.getElementById('auth-alert');
+    const userInfo = document.getElementById('user-info');
+    const userEmailDisplay = document.getElementById('user-email-display');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // Toggle Sign Up Mode
+    toggleSignupBtn.addEventListener('click', () => {
+      isSignUpMode = !isSignUpMode;
+      authSubmitBtn.querySelector('span').textContent = isSignUpMode ? 'REGISTER ACCOUNT' : 'SIGN IN';
+      toggleSignupBtn.textContent = isSignUpMode ? 'Already have an account? Sign In' : 'Create New Staff Account';
+      authAlert.className = 'auth-alert';
+      authAlert.style.display = 'none';
+    });
+
+    // Handle Auth Submit
+    authForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = authEmail.value.trim();
+      const password = authPassword.value;
+
+      authSubmitBtn.disabled = true;
+      authAlert.style.display = 'none';
+
+      try {
+        if (isSignUpMode) {
+          const { data, error } = await supabase.auth.signUp({ email, password });
+          if (error) throw error;
+          showAlert('Account created. If email verification is enabled, please check your inbox, or sign in now.', 'success');
+        } else {
+          const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+          if (error) throw error;
+        }
+      } catch (err) {
+        showAlert(err.message, 'error');
+      } finally {
+        authSubmitBtn.disabled = false;
+      }
+    });
+
+    function showAlert(msg, type) {
+      authAlert.textContent = msg;
+      authAlert.className = 'auth-alert ' + type;
+      authAlert.style.display = 'block';
+    }
+
+    // Handle Logout
+    logoutBtn.addEventListener('click', async () => {
+      await supabase.auth.signOut();
+    });
+
+    // Session State Listener
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (session && session.user) {
+        showDashboard(session.user);
+      } else {
+        showAuth();
+      }
+    });
+
+    function showDashboard(user) {
+      authView.style.display = 'none';
+      dashboardView.classList.add('active');
+      userInfo.style.display = 'flex';
+      userEmailDisplay.textContent = user.email;
+      loadDashboardData();
+    }
+
+    function showAuth() {
+      authView.style.display = 'block';
+      dashboardView.classList.remove('active');
+      userInfo.style.display = 'none';
+    }
+
+    // Tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tab = btn.getAttribute('data-tab');
+        document.getElementById('tab-inquiries').style.display = tab === 'inquiries' ? 'block' : 'none';
+        document.getElementById('tab-subscribers').style.display = tab === 'subscribers' ? 'block' : 'none';
+      });
+    });
+
+    // Load Data
+    async function loadDashboardData() {
+      // 1. Fetch Consultations
+      const { data: inquiries, error: inqErr } = await supabase
+        .from('consultations')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      // 2. Fetch Subscribers
+      const { data: subscribers, error: subErr } = await supabase
+        .from('subscribers')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (inquiries) {
+        renderInquiries(inquiries);
+        document.getElementById('metric-total-inquiries').textContent = inquiries.length;
+        document.getElementById('metric-pending-inquiries').textContent = inquiries.filter(i => i.status === 'pending').length;
+        document.getElementById('metric-contacted-inquiries').textContent = inquiries.filter(i => i.status === 'contacted').length;
+      }
+
+      if (subscribers) {
+        renderSubscribers(subscribers);
+        document.getElementById('metric-total-subscribers').textContent = subscribers.length;
+      }
+    }
+
+    function renderInquiries(items) {
+      const tbody = document.getElementById('inquiries-table-body');
+      if (items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No inquiries received yet. Submit one from the consultation form on the homepage!</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = items.map(item => `
+        <tr>
+          <td style="white-space: nowrap; color: var(--color-concrete-grey);">${new Date(item.created_at).toLocaleDateString()}</td>
+          <td style="font-weight: 700; color: var(--color-white);">${item.full_name}${item.company ? `<div style="font-size:0.75rem;color:var(--color-concrete-grey);">${item.company}</div>` : ''}</td>
+          <td>
+            <div><a href="mailto:${item.email}">${item.email}</a></div>
+            <div style="color: var(--color-concrete-grey); font-size: 0.8125rem;">${item.phone}</div>
+          </td>
+          <td style="color: var(--color-copper); font-weight: 600;">${item.project_type}</td>
+          <td>
+            <div>${item.budget}</div>
+            <div style="font-size: 0.75rem; color: var(--color-concrete-grey);">${item.location} (${item.timeline})</div>
+          </td>
+          <td style="max-width: 320px; font-size: 0.8125rem; color: var(--color-concrete-grey);">${item.description}</td>
+          <td>
+            <select onchange="updateInquiryStatus('${item.id}', this.value)" style="background:var(--color-deep-charcoal); color:var(--color-white); border:1px solid rgba(184,115,78,0.4); padding:4px 8px; font-size:0.75rem;">
+              <option value="pending" ${item.status === 'pending' ? 'selected' : ''}>Pending</option>
+              <option value="reviewing" ${item.status === 'reviewing' ? 'selected' : ''}>Reviewing</option>
+              <option value="contacted" ${item.status === 'contacted' ? 'selected' : ''}>Contacted</option>
+            </select>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function updateInquiryStatus(id, newStatus) {
+      await supabase.from('consultations').update({ status: newStatus }).eq('id', id);
+      loadDashboardData();
+    }
+
+    function renderSubscribers(items) {
+      const tbody = document.getElementById('subscribers-table-body');
+      if (items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" class="empty-state">No subscribers found yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = items.map(item => `
+        <tr>
+          <td style="white-space: nowrap; color: var(--color-concrete-grey);">${new Date(item.created_at).toLocaleDateString()}</td>
+          <td style="font-weight: 600;"><a href="mailto:${item.email}">${item.email}</a></td>
+          <td style="color: var(--color-concrete-grey); font-family: monospace; font-size: 0.75rem;">${item.id}</td>
+        </tr>
+      `).join('');
+    }
+  </script>
+</body>
+</html>
